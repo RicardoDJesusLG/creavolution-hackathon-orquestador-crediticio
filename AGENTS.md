@@ -21,7 +21,7 @@ El prototipo es utilizado para el video y demostración del pitch del Hackathon 
 2. **Fase 1 (Landing Page):** 
    Lee `specs/01-landing-page.md`. Vista pública institucional (`/`) con el Hero, logos oficiales de Syntage y Círculo de Crédito, tabla de conciliación financiera de muestra y los 3 pilares del proyecto.
 3. **Fase 2 (Dashboard Orquestador):** 
-   Lee `specs/02-orquestador-dashboard.md`. Vista privada interactiva (`/orquestador`) con simulación de extracción SAT vía Syntage, animación del medidor de score (0 a 88 o directo a 74), monitor quincenal de pagos PPD con toggle flexible de **Simulación** (pre y post extracción SAT) y modal de subasta con candado antifraude de Círculo de Crédito.
+   Lee `specs/02-orquestador-dashboard.md`. Vista privada interactiva (`/orquestador`) con autenticación CIEC en modal Syntage, animación del medidor de score (0 a 88 o directo a 74), monitor quincenal de pagos PPD con toggle flexible de **Simulación**, y la **Mesa de Licitación en Tiempo Real** con imágenes oficiales de instituciones financieras (Santander, Konfío, Banorte, BBVA), botón de refresco para el pitch, modal de Term Sheet y emisión de Pase de Originación (Voucher) con código de convenio y QR.
 
 ## REGLAS TÉCNICAS GLOBALES
 

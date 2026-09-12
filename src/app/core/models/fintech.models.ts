@@ -17,10 +17,19 @@ export interface B2BClientRisk {
 }
 
 export interface AuctionOfferMock {
+  id: string;
   institucion: string;
   tipoEntidad: 'Banco' | 'SOFOM' | 'Fondo Privado';
   montoAprobado: number;
   tasaInteresAnual: string;
   plazoMeses: number;
-  estatus: 'Recibida' | 'En evaluación';
+  pagoMensualEstimado: number;
+  comisionApertura: string;
+  badge: string;
+  codigoConvenio: string;
+  folioCirculo: string;
+  vigenciaOfertaDias: number;
+  logoType: 'santander' | 'konfio' | 'banorte' | 'bbva';
+  logoUrl: string;
+  estatus: 'Recibida' | 'En evaluación' | 'Aceptada';
 }

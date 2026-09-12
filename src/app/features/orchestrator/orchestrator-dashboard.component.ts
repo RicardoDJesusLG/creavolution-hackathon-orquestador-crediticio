@@ -1,8 +1,8 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { MOCK_FINANCIAL_METRICS, MOCK_B2B_CLIENTS } from '../../core/mocks/fintech.mocks';
-import { FinancialMonthData, B2BClientRisk } from '../../core/models/fintech.models';
+import { MOCK_FINANCIAL_METRICS, MOCK_B2B_CLIENTS, MOCK_AUCTION_OFFERS } from '../../core/mocks/fintech.mocks';
+import { FinancialMonthData, B2BClientRisk, AuctionOfferMock } from '../../core/models/fintech.models';
 
 @Component({
   selector: 'app-orchestrator-dashboard',
@@ -14,6 +14,7 @@ export class OrchestratorDashboardComponent {
   // Data sources from mocks
   readonly financialMetrics: FinancialMonthData[] = MOCK_FINANCIAL_METRICS;
   readonly baseB2BClients: B2BClientRisk[] = MOCK_B2B_CLIENTS;
+  readonly allOffersPool: AuctionOfferMock[] = MOCK_AUCTION_OFFERS;
 
   // Reactivity State with Angular Signals (Spec 02)
   readonly satConnected = signal<boolean>(false);
@@ -24,6 +25,15 @@ export class OrchestratorDashboardComponent {
   readonly isAuctionLoading = signal<boolean>(false);
   readonly showAuctionModal = signal<boolean>(false);
   readonly simulateDelay = signal<boolean>(false);
+
+  // Real-time Bidding & Offers State
+  readonly receivedOffers = signal<AuctionOfferMock[]>([]);
+  readonly isRefreshingAuction = signal<boolean>(false);
+  readonly selectedOffer = signal<AuctionOfferMock | null>(null);
+  readonly acceptedOffer = signal<AuctionOfferMock | null>(null);
+  readonly showOfferDetailModal = signal<boolean>(false);
+  readonly showVoucherModal = signal<boolean>(false);
+  readonly copiedConvenio = signal<boolean>(false);
 
   // Pre-filled demo CIEC credentials
   readonly demoRfc = signal<string>('ITC190412AA1');
@@ -144,12 +154,69 @@ export class OrchestratorDashboardComponent {
     setTimeout(() => {
       this.isAuctionLoading.set(false);
       this.auctionStarted.set(true);
+      // Initialize with Santander and Konfío offers
+      this.receivedOffers.set([this.allOffersPool[0], this.allOffersPool[1]]);
       this.showAuctionModal.set(true);
     }, 1500);
   }
 
   closeAuctionModal(): void {
     this.showAuctionModal.set(false);
+  }
+
+  /**
+   * Refreshes the auction to fetch additional incoming bank offers
+   */
+  refreshAuction(): void {
+    if (this.isRefreshingAuction()) return;
+
+    this.isRefreshingAuction.set(true);
+
+    setTimeout(() => {
+      this.isRefreshingAuction.set(false);
+      const currentCount = this.receivedOffers().length;
+      if (currentCount < this.allOffersPool.length) {
+        const nextOffer = this.allOffersPool[currentCount];
+        this.receivedOffers.update(offers => [...offers, nextOffer]);
+      }
+    }, 850);
+  }
+
+  /**
+   * Opens the detailed Term Sheet modal for a specific bank offer
+   */
+  viewOfferDetail(offer: AuctionOfferMock): void {
+    this.selectedOffer.set(offer);
+    this.showOfferDetailModal.set(true);
+  }
+
+  closeOfferDetailModal(): void {
+    this.showOfferDetailModal.set(false);
+    this.selectedOffer.set(null);
+  }
+
+  /**
+   * Accepts an offer, locks in terms, and opens the official Convenio voucher
+   */
+  acceptOffer(offer: AuctionOfferMock): void {
+    this.showOfferDetailModal.set(false);
+    this.acceptedOffer.set(offer);
+    this.showVoucherModal.set(true);
+  }
+
+  closeVoucherModal(): void {
+    this.showVoucherModal.set(false);
+  }
+
+  /**
+   * Copies the convenio token to clipboard
+   */
+  copyConvenioCode(code: string): void {
+    if (navigator?.clipboard) {
+      navigator.clipboard.writeText(code);
+      this.copiedConvenio.set(true);
+      setTimeout(() => this.copiedConvenio.set(false), 2200);
+    }
   }
 
   /**

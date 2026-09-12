@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <rect width="120" height="120" rx="24" fill="#004481"/>
+  <g transform="translate(10, 20)">
+    <text x="50" y="44" fill="white" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="28" letter-spacing="2" text-anchor="middle">BBVA</text>
+    <rect x="18" y="56" width="64" height="4" rx="2" fill="#1464A5"/>
+  </g>
+  <text x="60" y="102" fill="#8BBEE8" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="10" letter-spacing="1" text-anchor="middle">MÉXICO</text>
+</svg>

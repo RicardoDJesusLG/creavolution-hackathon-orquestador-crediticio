@@ -509,68 +509,211 @@
 
     </div>
 
-    <!-- 5. Sección Inferior: Subasta Privada y Modal Antifraude con Logo Círculo de Crédito -->
+    <!-- 5. Sección Inferior: Subasta Privada y Mesa de Licitación en Tiempo Real -->
     <section class="mt-4">
-      <div class="glass-panel-elevated rounded-2xl p-6 sm:p-8 border border-indigo-200/80 flex flex-col md:flex-row items-center justify-between gap-6 shadow-glass-card relative overflow-hidden bg-gradient-to-r from-indigo-50/70 via-white to-emerald-50/70">
-        
-        <div class="space-y-1.5 text-center md:text-left z-10">
-          <div class="inline-flex items-center gap-2 text-xs font-bold text-indigo-700">
-            <!-- Logo Círculo de Crédito Mini -->
-            <svg class="w-4 h-4 shrink-0" viewBox="0 0 32 32" fill="none">
-              <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="3"/>
-              <circle cx="16" cy="16" r="9" stroke="#78BE20" stroke-width="3"/>
-            </svg>
-            <span>Licitación Institucional Blindada | Círculo de Crédito</span>
-          </div>
-          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-            ¿Deseas licitar este expediente anonimizado ante nuestra red?
-          </h2>
-          <p class="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
-            Publicación directa ante más de 25 bancos, SOFOMes y fondos de deuda regulados. El candado antifraude evitará el <em class="italic text-slate-800 font-medium">loan stacking</em> bloqueando temporalmente solicitudes paralelas.
-          </p>
-        </div>
-
-        <!-- Botón de Ingreso a Subasta con LOGO CÍRCULO DE CRÉDITO -->
-        <div class="shrink-0 z-10 w-full md:w-auto">
-          <button 
-            (click)="startAuction()"
-            [disabled]="scoreValue() === 0 || isAuctionLoading() || auctionStarted()"
-            type="button" 
-            class="w-full md:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold transition-all duration-200 shadow-md"
-            [ngClass]="{
-              'bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300 shadow-none': scoreValue() === 0,
-              'bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-700 hover:from-indigo-500 hover:to-violet-600 text-white shadow-glow-indigo hover:scale-105 active:scale-95': scoreValue() > 0 && !auctionStarted(),
-              'bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-sm cursor-default': auctionStarted()
-            }">
-            @if (isAuctionLoading()) {
-              <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              <span>Activando candado en Círculo de Crédito...</span>
-            } @else if (auctionStarted()) {
-              <!-- Logo Oficial Círculo de Crédito -->
-              <svg class="w-5 h-5 shrink-0" viewBox="0 0 32 32" fill="none">
+      
+      <!-- ESTADO A: Antes de iniciar la subasta -->
+      @if (!auctionStarted()) {
+        <div class="glass-panel-elevated rounded-2xl p-6 sm:p-8 border border-indigo-200/80 flex flex-col md:flex-row items-center justify-between gap-6 shadow-glass-card relative overflow-hidden bg-gradient-to-r from-indigo-50/70 via-white to-emerald-50/70">
+          
+          <div class="space-y-1.5 text-center md:text-left z-10">
+            <div class="inline-flex items-center gap-2 text-xs font-bold text-indigo-700">
+              <!-- Logo Círculo de Crédito Mini -->
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 32 32" fill="none">
                 <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="3"/>
-                <circle cx="16" cy="16" r="9" stroke="#10B981" stroke-width="3"/>
-                <circle cx="16" cy="16" r="4" fill="#004F9F"/>
+                <circle cx="16" cy="16" r="9" stroke="#78BE20" stroke-width="3"/>
               </svg>
-              <span>Subasta Activa & Candado Operando</span>
-            } @else {
-              <!-- Logo Oficial Círculo de Crédito en el botón -->
-              <div class="w-6 h-6 rounded-full bg-white p-0.5 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5" viewBox="0 0 32 32" fill="none">
-                  <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="3.5"/>
-                  <circle cx="16" cy="16" r="9" stroke="#78BE20" stroke-width="3.5"/>
-                  <circle cx="16" cy="16" r="4" fill="#004F9F"/>
-                </svg>
-              </div>
-              <span>Ingresar a Subasta Privada de Crédito</span>
-            }
-          </button>
-        </div>
+              <span>Licitación Institucional Blindada | Círculo de Crédito</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+              ¿Deseas licitar este expediente anonimizado ante nuestra red?
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
+              Publicación directa ante más de 25 bancos, SOFOMes y fondos de deuda regulados. El candado antifraude evitará el <em class="italic text-slate-800 font-medium">loan stacking</em> bloqueando temporalmente solicitudes paralelas.
+            </p>
+          </div>
 
-      </div>
+          <!-- Botón de Ingreso a Subasta -->
+          <div class="shrink-0 z-10 w-full md:w-auto">
+            <button 
+              (click)="startAuction()"
+              [disabled]="scoreValue() === 0 || isAuctionLoading()"
+              type="button" 
+              class="w-full md:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold transition-all duration-200 shadow-md"
+              [ngClass]="{
+                'bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300 shadow-none': scoreValue() === 0,
+                'bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-700 hover:from-indigo-500 hover:to-violet-600 text-white shadow-glow-indigo hover:scale-105 active:scale-95': scoreValue() > 0
+              }">
+              @if (isAuctionLoading()) {
+                <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Activando candado en Círculo de Crédito...</span>
+              } @else {
+                <!-- Logo Oficial Círculo de Crédito en el botón -->
+                <div class="w-6 h-6 rounded-full bg-white p-0.5 flex items-center justify-center shrink-0">
+                  <svg class="w-5 h-5" viewBox="0 0 32 32" fill="none">
+                    <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="3.5"/>
+                    <circle cx="16" cy="16" r="9" stroke="#78BE20" stroke-width="3.5"/>
+                    <circle cx="16" cy="16" r="4" fill="#004F9F"/>
+                  </svg>
+                </div>
+                <span>Ingresar a Subasta Privada de Crédito</span>
+              }
+            </button>
+          </div>
+
+        </div>
+      } @else {
+        <!-- ESTADO B: Mesa de Licitación Multibancaria en Vivo (Live Bidding Room) -->
+        <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 border border-indigo-200/90 shadow-glass-card relative overflow-hidden bg-white/95 animate-fade-in">
+          
+          <!-- Header de la Mesa de Subasta -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-100 gap-4">
+            <div>
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="relative flex h-3 w-3">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </span>
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                  Mesa de Licitación en Tiempo Real
+                </span>
+                <span class="text-xs text-slate-400 hidden sm:inline">|</span>
+                <span class="text-xs font-semibold text-indigo-700 hidden sm:inline">
+                  🔒 Candado Círculo de Crédito Activo
+                </span>
+              </div>
+              <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+                Posturas Recibidas de Entidades Financieras
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-500 mt-0.5">
+                Las instituciones evalúan tu expediente fiscal anonimizado y emiten ofertas firmes en competencia directa.
+              </p>
+            </div>
+
+            <!-- Contador y Botón de Refresco para la Demo -->
+            <div class="flex items-center gap-3 self-start md:self-auto">
+              <div class="text-right hidden sm:block">
+                <span class="text-xs font-bold text-slate-800 block font-mono">
+                  {{ receivedOffers().length }} de {{ allOffersPool.length }} posturas
+                </span>
+                <span class="text-[10px] text-slate-400">25 instituciones conectadas</span>
+              </div>
+              
+              <button 
+                (click)="refreshAuction()" 
+                [disabled]="isRefreshingAuction() || receivedOffers().length >= allOffersPool.length"
+                type="button" 
+                class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 shadow-sm transition disabled:opacity-50 disabled:cursor-not-allowed">
+                @if (isRefreshingAuction()) {
+                  <svg class="animate-spin h-4 w-4 text-indigo-700" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span>Buscando posturas...</span>
+                } @else if (receivedOffers().length >= allOffersPool.length) {
+                  <span>✓ Todas las ofertas recibidas</span>
+                } @else {
+                  <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                  </svg>
+                  <span>Refrescar Licitación</span>
+                }
+              </button>
+            </div>
+          </div>
+
+          <!-- Carrusel / Grid de Tarjetas de Ofertas Recibidas -->
+          <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (offer of receivedOffers(); track offer.id) {
+              <div class="rounded-2xl p-5 border border-slate-200/90 bg-slate-50/70 hover:bg-white hover:border-indigo-300 hover:shadow-lg transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+                
+                <!-- Glow sutil en hover -->
+                <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-xl pointer-events-none group-hover:bg-indigo-500/10 transition"></div>
+
+                <div>
+                  <!-- Encabezado de la Tarjeta con Logo Institucional -->
+                  <div class="flex items-start justify-between gap-3 mb-4">
+                    <div class="flex items-center gap-3">
+                      
+                      <!-- Logo Oficial de la Institución Financiera desde el Mock -->
+                      <div class="w-12 h-12 rounded-xl overflow-hidden shadow-sm shrink-0 border border-slate-200/80 bg-white p-1 flex items-center justify-center">
+                        <img [src]="offer.logoUrl" [alt]="offer.institucion" class="w-full h-full object-contain rounded-lg" />
+                      </div>
+
+                      <div>
+                        <h4 class="font-extrabold text-slate-900 text-sm leading-snug">
+                          {{ offer.institucion }}
+                        </h4>
+                        <span class="text-[11px] text-slate-500 font-medium">
+                          {{ offer.tipoEntidad }} Regulado
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Badge de Ventaja Competitiva -->
+                  <div class="mb-4">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white text-indigo-700 border border-indigo-100 shadow-sm">
+                      {{ offer.badge }}
+                    </span>
+                  </div>
+
+                  <!-- Condiciones Financieras de la Oferta -->
+                  <div class="space-y-2 py-3 border-y border-slate-200/80 my-3 text-xs">
+                    <div class="flex items-center justify-between">
+                      <span class="text-slate-500">Monto Aprobado:</span>
+                      <span class="text-base font-extrabold text-slate-900 font-mono">
+                        {{ offer.montoAprobado | currency:'MXN':'symbol-narrow':'1.0-0' }} MXN
+                      </span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-slate-500">Tasa Anual:</span>
+                      <span class="font-bold text-emerald-700 font-mono">{{ offer.tasaInteresAnual }}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-slate-500">Plazo / Mensualidad:</span>
+                      <span class="font-semibold text-slate-700">
+                        {{ offer.plazoMeses }} meses | ~{{ offer.pagoMensualEstimado | currency:'MXN':'symbol-narrow':'1.0-0' }}/mes
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Botón de Acción para Visualizar la Oferta -->
+                <div class="mt-2 pt-2">
+                  <button 
+                    (click)="viewOfferDetail(offer)"
+                    type="button" 
+                    class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 shadow-sm transition-all duration-200 hover:shadow-md flex items-center justify-center gap-2">
+                    <span>Visualizar Oferta (Term Sheet)</span>
+                    <svg class="w-3.5 h-3.5 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                </div>
+
+              </div>
+            }
+          </div>
+
+          <!-- Footer informativo de la subasta -->
+          <div class="mt-6 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>Licitación Criptográfica: Datos fiscales anonimizados conforme a LFPDPPP.</span>
+            </div>
+            <span class="font-medium text-indigo-600">
+              Vigencia promedio de ofertas: 15 días hábiles
+            </span>
+          </div>
+
+        </div>
+      }
+
     </section>
 
   </main>
@@ -715,7 +858,7 @@
     </div>
   }
 
-  <!-- Modal de Confirmación (Overlay con efecto Blur en Fondo Blanco) -->
+  <!-- Modal de Confirmación Inicial de Subasta (Celebración y Candado Activo) -->
   @if (showAuctionModal()) {
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-md p-4 animate-fade-in">
       <div class="glass-panel-elevated rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-emerald-400 shadow-2xl relative bg-white/95">
@@ -737,43 +880,292 @@
         </div>
 
         <h3 class="text-2xl font-extrabold text-slate-900 text-center tracking-tight mb-2">
-          ¡Solicitud Publicada en la Subasta Privada!
+          ¡Expediente Transmitido a la Mesa de Subasta!
         </h3>
         
         <p class="text-xs sm:text-sm text-slate-600 text-center mb-6 leading-relaxed">
-          Tu expediente ha sido publicado de forma completamente anonimizada. Los bancos y SOFOMes están emitiendo sus Term Sheets. Te notificaremos cuando recibas la primera oferta formal.
+          Tu solicitud fue publicada anonimizadamente y el candado antifraude de <strong class="text-indigo-700">Círculo de Crédito</strong> se encuentra activo. Las entidades financieras están emitiendo sus posturas en tiempo real.
         </p>
 
-        <!-- Resumen de la Licitación -->
+        <!-- Resumen Inicial -->
         <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4 space-y-3 mb-6 text-xs">
           <div class="flex items-center justify-between py-1 border-b border-slate-200">
-            <span class="text-slate-500 font-medium">Monto Objetivo:</span>
-            <span class="font-bold text-slate-900">$1,500,000 MXN (Capital de Trabajo)</span>
+            <span class="text-slate-500 font-medium">Monto Objetivo Solicitado:</span>
+            <span class="font-bold text-slate-900">$1,500,000 MXN</span>
           </div>
           <div class="flex items-center justify-between py-1 border-b border-slate-200">
-            <span class="text-slate-500 font-medium">Tasa de Salida Estimada:</span>
-            <span class="font-bold text-emerald-700">16.2% Anual (TIIE + Spread Preferencial)</span>
+            <span class="text-slate-500 font-medium">Instituciones Notificadas:</span>
+            <span class="font-bold text-indigo-700">+25 Bancos y SOFOMes Reguladas</span>
           </div>
           <div class="flex items-center justify-between py-1">
-            <span class="text-slate-500 font-medium">Estatus Antifraude:</span>
-            <span class="font-bold text-indigo-700 flex items-center gap-1.5">
-              <!-- Círculo de Crédito Logo -->
+            <span class="text-slate-500 font-medium">Estatus de Blindaje:</span>
+            <span class="font-bold text-emerald-700 flex items-center gap-1.5">
               <svg class="w-3.5 h-3.5" viewBox="0 0 32 32" fill="none">
                 <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="3.5"/>
                 <circle cx="16" cy="16" r="9" stroke="#78BE20" stroke-width="3.5"/>
               </svg>
-              Protección Activa en Círculo de Crédito
+              Bloqueo Transaccional Activo
             </span>
           </div>
         </div>
 
-        <!-- Botón de Cierre -->
+        <!-- Botón para ver las posturas en vivo -->
         <button 
           (click)="closeAuctionModal()" 
           type="button" 
-          class="w-full py-3.5 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-glow-emerald transition-all duration-200">
-          Entendido / Monitorear Subasta
+          class="w-full py-3.5 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-glow-emerald transition-all duration-200 flex items-center justify-center gap-2">
+          <span>Ver Posturas en Vivo en la Mesa de Subasta →</span>
         </button>
+
+      </div>
+    </div>
+  }
+
+  <!-- Modal Detallado de Oferta: Visualizar Oferta / Term Sheet Oficial -->
+  @if (showOfferDetailModal() && selectedOffer()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-md p-4 animate-fade-in">
+      <div class="glass-panel-elevated rounded-3xl max-w-xl w-full p-6 sm:p-8 border border-indigo-300 shadow-2xl relative bg-white/95">
+        
+        <!-- Header del Term Sheet con Logo de la Institución -->
+        <div class="flex items-start justify-between pb-4 border-b border-slate-100 gap-4">
+          <div class="flex items-center gap-3.5">
+            <!-- Logo Oficial de la Institución Financiera desde el Mock -->
+            <div class="w-14 h-14 rounded-2xl overflow-hidden shadow-sm shrink-0 border border-slate-200 bg-white p-1.5 flex items-center justify-center">
+              <img [src]="selectedOffer()?.logoUrl" [alt]="selectedOffer()?.institucion" class="w-full h-full object-contain rounded-xl" />
+            </div>
+
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
+                  Oferta Aprobada en Firme
+                </span>
+                <span class="text-xs text-slate-400">|</span>
+                <span class="text-xs font-semibold text-slate-500">Folio: {{ selectedOffer()?.folioCirculo }}</span>
+              </div>
+              <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">
+                {{ selectedOffer()?.institucion }}
+              </h3>
+            </div>
+          </div>
+
+          <button (click)="closeOfferDetailModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Desglose de Condiciones Financieras (Term Sheet) -->
+        <div class="mt-5 space-y-4">
+          
+          <div class="p-4 rounded-2xl bg-indigo-50/50 border border-indigo-100 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-medium text-slate-600 block">Línea de Crédito Autorizada</span>
+              <span class="text-2xl font-black text-slate-900 font-mono">
+                {{ selectedOffer()?.montoAprobado | currency:'MXN':'symbol-narrow':'1.0-0' }} MXN
+              </span>
+            </div>
+            <div class="text-right">
+              <span class="text-xs font-medium text-slate-600 block">Pago Mensual Estimado</span>
+              <span class="text-lg font-extrabold text-indigo-700 font-mono">
+                {{ selectedOffer()?.pagoMensualEstimado | currency:'MXN':'symbol-narrow':'1.0-0' }} MXN
+              </span>
+            </div>
+          </div>
+
+          <!-- Matriz de Términos -->
+          <div class="grid grid-cols-2 gap-3 text-xs">
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <span class="text-slate-400 block mb-1">Tasa de Interés Anual</span>
+              <span class="font-bold text-slate-900 text-sm font-mono">{{ selectedOffer()?.tasaInteresAnual }}</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <span class="text-slate-400 block mb-1">Plazo de Amortización</span>
+              <span class="font-bold text-slate-900 text-sm font-mono">{{ selectedOffer()?.plazoMeses }} Meses</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <span class="text-slate-400 block mb-1">Comisión por Apertura</span>
+              <span class="font-bold text-slate-900 text-sm">{{ selectedOffer()?.comisionApertura }}</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <span class="text-slate-400 block mb-1">Garantía / Aval</span>
+              <span class="font-bold text-emerald-700 text-sm">Sin Garantía Hipotecaria</span>
+            </div>
+          </div>
+
+          <!-- Nota de blindaje y pre-calificación -->
+          <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 text-xs text-emerald-900 flex items-start gap-2.5">
+            <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            <p>
+              <strong>Expediente Digital Aprobado:</strong> La institución validó tus ingresos vía Syntage y el Score de Red en Círculo de Crédito. Al aceptar, se generará tu <strong>Código de Convenio Oficial</strong> para formalización inmediata.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="mt-6 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-end gap-3">
+          <button 
+            (click)="closeOfferDetailModal()" 
+            type="button" 
+            class="w-full sm:w-auto px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
+            Volver a la Mesa
+          </button>
+          
+          <button 
+            (click)="acceptOffer(selectedOffer()!)" 
+            type="button" 
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 hover:from-emerald-500 hover:to-teal-600 shadow-glow-emerald transition-all duration-200 hover:scale-[1.02]">
+            <span>Aceptar Oferta y Generar Código de Convenio →</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  }
+
+  <!-- Modal Voucher: Código de Convenio y Pase de Formalización a Sucursal -->
+  @if (showVoucherModal() && acceptedOffer()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-md p-4 animate-fade-in">
+      <div class="glass-panel-elevated rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-emerald-400 shadow-2xl relative bg-white/95">
+        
+        <!-- Header con Checkmark y Logo Institucional Oficial -->
+        <div class="text-center pb-4 border-b border-slate-100">
+          <div class="flex items-center justify-center gap-3 mb-3">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-300 flex items-center justify-center text-emerald-600 shadow-sm">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <div class="w-14 h-14 rounded-2xl overflow-hidden shadow-sm border border-slate-200 bg-white p-1 flex items-center justify-center">
+              <img [src]="acceptedOffer()?.logoUrl" [alt]="acceptedOffer()?.institucion" class="w-full h-full object-contain rounded-xl" />
+            </div>
+          </div>
+          <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+            Convenio Formalizado con Éxito
+          </span>
+          <h3 class="text-2xl font-black text-slate-900 tracking-tight mt-2">
+            Pase de Originación de Crédito
+          </h3>
+          <p class="text-xs text-slate-500 mt-1">
+            Emitido por <strong class="text-indigo-700">{{ acceptedOffer()?.institucion }}</strong> para <strong class="text-slate-800">Industrial Textil del Centro S.A. de C.V.</strong>
+          </p>
+        </div>
+
+        <!-- Voucher Card con Código y QR -->
+        <div class="mt-5 p-5 rounded-2xl bg-gradient-to-b from-slate-50 to-white border border-slate-200 space-y-4 text-center">
+          
+          <div>
+            <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
+              Código Único de Convenio (Token B2B)
+            </span>
+            <div class="flex items-center justify-center gap-2">
+              <span class="text-xl sm:text-2xl font-black text-indigo-700 tracking-wider font-mono bg-indigo-50/80 px-4 py-2 rounded-xl border border-indigo-200">
+                {{ acceptedOffer()?.codigoConvenio }}
+              </span>
+              <button 
+                (click)="copyConvenioCode(acceptedOffer()!.codigoConvenio)"
+                type="button" 
+                title="Copiar Código"
+                class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition shadow-sm">
+                @if (copiedConvenio()) {
+                  <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                  </svg>
+                } @else {
+                  <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                  </svg>
+                }
+              </button>
+            </div>
+            @if (copiedConvenio()) {
+              <span class="text-[11px] font-bold text-emerald-600 block mt-1 animate-fade-in">
+                ✓ ¡Copiado al portapapeles!
+              </span>
+            }
+          </div>
+
+          <!-- Código QR Vectorial Inline Nítido -->
+          <div class="flex flex-col items-center justify-center py-2">
+            <div class="p-3 rounded-2xl bg-white border border-slate-200 shadow-sm">
+              <!-- QR Code Vectorial -->
+              <svg class="w-32 h-32" viewBox="0 0 100 100" fill="currentColor">
+                <!-- Outer Corners -->
+                <rect x="10" y="10" width="25" height="25" rx="4" fill="#0F172A"/>
+                <rect x="15" y="15" width="15" height="15" fill="white"/>
+                <rect x="18" y="18" width="9" height="9" fill="#4F46E5"/>
+
+                <rect x="65" y="10" width="25" height="25" rx="4" fill="#0F172A"/>
+                <rect x="70" y="15" width="15" height="15" fill="white"/>
+                <rect x="73" y="18" width="9" height="9" fill="#4F46E5"/>
+
+                <rect x="10" y="65" width="25" height="25" rx="4" fill="#0F172A"/>
+                <rect x="15" y="70" width="15" height="15" fill="white"/>
+                <rect x="18" y="73" width="9" height="9" fill="#4F46E5"/>
+
+                <!-- Data Matrix Bits -->
+                <rect x="42" y="12" width="6" height="6" rx="1" fill="#0F172A"/>
+                <rect x="52" y="12" width="6" height="6" rx="1" fill="#0F172A"/>
+                <rect x="42" y="24" width="6" height="6" rx="1" fill="#059669"/>
+                <rect x="52" y="24" width="6" height="6" rx="1" fill="#0F172A"/>
+                
+                <rect x="12" y="42" width="6" height="6" rx="1" fill="#0F172A"/>
+                <rect x="24" y="42" width="6" height="6" rx="1" fill="#059669"/>
+                <rect x="36" y="42" width="6" height="6" rx="1" fill="#0F172A"/>
+                <rect x="48" y="42" width="6" height="6" rx="1" fill="#4F46E5"/>
+                <rect x="60" y="42" width="6" height="6" rx="1" fill="#0F172A"/>
+                <rect x="72" y="42" width="6" height="6" rx="1" fill="#0F172A"/>
+                <rect x="84" y="42" width="6" height="6" rx="1" fill="#059669"/>
+
+                <rect x="42" y="54" width="6" height="6" rx="1" fill="#4F46E5"/>
+                <rect x="54" y="54" width="6" height="6" rx="1" fill="#0F172A"/>
+                <rect x="66" y="54" width="6" height="6" rx="1" fill="#0F172A"/>
+                <rect x="78" y="54" width="6" height="6" rx="1" fill="#059669"/>
+
+                <rect x="42" y="66" width="6" height="6" rx="1" fill="#0F172A"/>
+                <rect x="54" y="66" width="6" height="6" rx="1" fill="#4F46E5"/>
+                <rect x="66" y="66" width="6" height="6" rx="1" fill="#0F172A"/>
+                <rect x="78" y="66" width="6" height="6" rx="1" fill="#0F172A"/>
+
+                <rect x="42" y="78" width="6" height="6" rx="1" fill="#059669"/>
+                <rect x="54" y="78" width="6" height="6" rx="1" fill="#0F172A"/>
+                <rect x="66" y="78" width="6" height="6" rx="1" fill="#4F46E5"/>
+                <rect x="78" y="78" width="6" height="6" rx="1" fill="#0F172A"/>
+              </svg>
+            </div>
+            <span class="text-[10px] text-slate-400 mt-1.5 font-medium">
+              Escanear en ventanilla bancaria o app empresarial
+            </span>
+          </div>
+
+          <!-- Instrucciones de Formalización -->
+          <div class="text-left text-xs text-slate-600 space-y-1.5 p-3 rounded-xl bg-slate-50 border border-slate-200">
+            <div class="font-bold text-slate-800">Instrucciones para la PyME:</div>
+            <p>
+              1. Presenta este código en cualquier sucursal de <strong>{{ acceptedOffer()?.institucion }}</strong> o ingrésalo en su portal empresarial.
+            </p>
+            <p>
+              2. Tu expediente financiero (CFDIs validados por Syntage y Score de Círculo de Crédito) ya se encuentra precargado y vinculado a este token.
+            </p>
+            <p>
+              3. Firma el contrato con tu e.firma del SAT para recibir la dispersión en menos de 24 horas hábiles.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Botón de Cierre -->
+        <div class="mt-5 pt-3 border-t border-slate-100">
+          <button 
+            (click)="closeVoucherModal()" 
+            type="button" 
+            class="w-full py-3.5 px-4 rounded-xl text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 transition shadow-sm">
+            Finalizar y Volver al Dashboard
+          </button>
+        </div>
 
       </div>
     </div>

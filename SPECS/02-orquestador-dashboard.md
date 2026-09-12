@@ -105,29 +105,59 @@ Es el núcleo interactivo para el pitch del Hackathon Crevolution 2026. Diseñad
 
 ---
 
-## 5. Sección Inferior: Subasta Privada y Modal Antifraude
+## 5. Sección Inferior: Subasta Privada, Mesa de Licitación en Tiempo Real y Voucher
 
-* **Contenedor de Subasta:**
-  * Fondo `bg-gradient-to-r from-indigo-50/70 via-white to-emerald-50/70 border border-indigo-200/80 shadow-glass-card`.
-  * Encabezado con **Logo Oficial de Círculo de Crédito**: *"Licitación Institucional Blindada | Círculo de Crédito"*.
-  * Texto: *"¿Deseas licitar este expediente anonimizado ante nuestra red de más de 25 instituciones financieras reguladas?"*
-  * **Botón:** `Ingresar a Subasta Privada de Crédito` (con isotipo de Círculo de Crédito).
-    * Deshabilitado con opacidad reducida mientras el score sea 0.
-    * Habilitado con brillo perimetral una vez que el score se calcule.
-* **Comportamiento del Botón:**
-  1. Al hacer clic, muestra spinner por 1.5 segundos: *"Activando candado en Círculo de Crédito y notificando a la red..."*.
-  2. Al concluir, el badge de la TopBar cambia a `🔒 Candado Activo` y se abre el **Modal de Confirmación**.
+### 5.1 Estado Inicial: Convocatoria a la Subasta
+* **Contenedor:** `bg-gradient-to-r from-indigo-50/70 via-white to-emerald-50/70 border border-indigo-200/80 shadow-glass-card`.
+* Encabezado con **Logo Oficial de Círculo de Crédito**: *"Licitación Institucional Blindada | Círculo de Crédito"*.
+* Texto explicativo sobre publicación anonimizada ante más de 25 bancos, SOFOMes y fondos de deuda, con candado antifraude contra *loan stacking*.
+* **Botón de Ingreso:** `Ingresar a Subasta Privada de Crédito` (con isotipo oficial de Círculo de Crédito).
 
-* **Modal de Confirmación (Overlay con efecto Blur en Fondo Blanco):**
-  * Ventana emergente centrada con bordes suaves y sombra profunda.
-  * Iconos superiores: **Logo de Círculo de Crédito** + Checkmark animado en verde esmeralda.
-  * Título: `¡Solicitud Publicada en la Subasta Privada!`
-  * **Cuerpo del Modal:**
-    * Monto objetivo: `$1,500,000 MXN (Capital de Trabajo)`.
-    * Tasa de salida estimada: `16.2% Anual (TIIE + Spread Preferencial)`.
-    * Estatus Antifraude: `Protección Activa en Círculo de Crédito (Bloqueo de Loan Stacking)`.
-    * Mensaje descriptivo de anonimización y emisión de Term Sheets por parte de bancos y SOFOMes.
-  * **Botón de Cierre:** `Entendido / Monitorear Subasta`.
+### 5.2 Modal de Publicación Inicial
+* Al pulsar el botón, activa spinner por 1.5s (*"Activando candado en Círculo de Crédito..."*).
+* Despliega modal de confirmación con checkmark y logos oficiales, informando el blindaje del expediente.
+* Botón: `Ver Posturas en Vivo en la Mesa de Subasta →`.
+
+### 5.3 Mesa de Licitación Multibancaria en Tiempo Real (Live Bidding Room)
+* Se despliega al cerrar el modal de confirmación.
+* **Header de la Mesa:**
+  * Indicador parpadeante en verde esmeralda: `MESA DE LICITACIÓN EN TIEMPO REAL`.
+  * Candado activo de Círculo de Crédito.
+  * Contador de posturas: `X de 4 posturas recibidas` (+25 instituciones conectadas).
+  * **Botón de Simulación para el Pitch:** `Refrescar Licitación` (con spinner y carga progresiva de ofertas adicionales).
+* **Mocks de Entidades Financieras con Imágenes Oficiales:**
+  * Cada objeto en `MOCK_AUCTION_OFFERS` contiene su respectiva imagen institucional (`logoUrl`):
+    - **Banco Santander México:** `/images/banks/santander.svg` (Llama icónica Santander sobre fondo rojo).
+    - **Konfío (SOFOM E.N.R.):** `/images/banks/konfio.svg` (K estilizada con gradiente violeta/índigo).
+    - **Grupo Financiero Banorte:** `/images/banks/banorte.svg` (Emblema circular estilizado Banorte sobre fondo rojo).
+    - **BBVA México:** `/images/banks/bbva.svg` (Tipografía geométrica oficial BBVA sobre azul marino).
+  * Cada tarjeta de postura muestra:
+    - Logo oficial de la entidad financiera.
+    - Tipo de entidad regulada (Banco / SOFOM).
+    - Badge de ventaja competitiva (*⭐ Mejor Tasa*, *⚡ Desembolso Express 24h*, *🏆 Mayor Monto*, *💳 Línea Revolvente*).
+    - Monto Aprobado, Tasa Anual y Plazo / Pago mensual estimado.
+    - Botón de acción: `Visualizar Oferta (Term Sheet) →`.
+
+### 5.4 Modal de Term Sheet Oficial (Visualizar Oferta)
+* Se abre al pulsar `Visualizar Oferta (Term Sheet)` en cualquier tarjeta de banco.
+* Despliega la imagen institucional oficial del banco seleccionado.
+* Detalle desglosado:
+  - Línea de crédito aprobada y mensualidad estimada.
+  - Tasa anualizada (TIIE + Spread).
+  - Plazo de amortización en meses.
+  - Comisión por apertura y garantía requerida (Sin garantía hipotecaria).
+  - Folio de dictamen en Círculo de Crédito.
+* Botón principal: `Aceptar Oferta y Generar Código de Convenio →`.
+
+### 5.5 Modal de Formalización: Pase de Originación de Crédito (Voucher Oficial)
+* Despliega encabezado con checkmark esmeralda y la imagen de la institución financiera elegida.
+* **Token Único de Convenio (B2B):** Formato alfanumérico bancario (e.g. `SAN-NXR-2026-9812-B2B`) con botón de copiado rápido al portapapeles y feedback visual instantáneo.
+* **Código QR Vectorial Nítido:** Para escaneo en ventanilla bancaria, terminal o portal empresarial.
+* **Instrucciones para la PyME:**
+  1. Presentar el token o QR en sucursal o portal web del banco seleccionado.
+  2. Expediente fiscal y score ya precargados y sincronizados.
+  3. Firma digital con e.firma SAT para dispersión de fondos en menos de 24 horas hábiles.
+* Botón: `Finalizar y Volver al Dashboard`.
 
 ---
 
@@ -140,4 +170,12 @@ auctionStarted = signal<boolean>(false);
 isAuctionLoading = signal<boolean>(false);
 showAuctionModal = signal<boolean>(false);
 simulateDelay = signal<boolean>(false);
+showCiecModal = signal<boolean>(false);
+receivedOffers = signal<AuctionOfferMock[]>([]);
+isRefreshingAuction = signal<boolean>(false);
+selectedOffer = signal<AuctionOfferMock | null>(null);
+acceptedOffer = signal<AuctionOfferMock | null>(null);
+showOfferDetailModal = signal<boolean>(false);
+showVoucherModal = signal<boolean>(false);
+copiedConvenio = signal<boolean>(false);
 ```
