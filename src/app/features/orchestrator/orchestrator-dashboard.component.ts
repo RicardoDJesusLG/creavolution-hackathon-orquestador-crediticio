@@ -171,12 +171,16 @@ export class OrchestratorDashboardComponent {
    * Refreshes the auction to fetch additional incoming bank offers
    */
   refreshAuction(): void {
-    if (this.isRefreshingAuction() || this.receivedOffers().length >= this.allOffersPool.length) return;
+    // Si la oferta ya fue aceptada, la subasta ha finalizado y no se reciben nuevas postulaciones
+    if (this.acceptedOffer() || this.isRefreshingAuction() || this.receivedOffers().length >= this.allOffersPool.length) return;
 
     this.isRefreshingAuction.set(true);
 
     setTimeout(() => {
       this.isRefreshingAuction.set(false);
+      // Double check in case an offer was accepted during timeout
+      if (this.acceptedOffer()) return;
+
       const currentCount = this.receivedOffers().length;
       if (currentCount === 0) {
         // Primera vez que se refresca: ingresan Santander y Konfío

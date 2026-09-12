@@ -172,7 +172,9 @@ Es el núcleo interactivo para el pitch del Hackathon Crevolution 2026. Diseñad
 * Al aceptar la oferta de una institución financiera (e.g. Banco Santander México) y emitirse el Pase de Originación:
   - Dicha oferta pasa al estado `Aceptada`, mostrando un marco esmeralda con `✓ Convenio Adjudicado en Firme` y el botón `✓ Ver Pase de Originación (Voucher)`.
   - **Todas las demás ofertas recibidas (Konfío, Banorte, BBVA) se bloquean automáticamente en tiempo real (`Bloqueada`)**, pasando a opacidad reducida (`opacity-60 grayscale-[30%]`), con el badge `🔒 Bloqueada por Adjudicación Exclusiva` y botón desactivado `Bloqueada (Licitación Concluida)`.
-  - Este candado impide que el solicitante intente redimir múltiples códigos de convenio ante distintas entidades a partir de la misma línea de capacidad calificada.
+  - **Desactivación del Botón de Refresco:** El botón `Refrescar Licitación` se reemplaza inmediatamente por el badge inactivo **`✓ Subasta Finalizada (Licitación Cerrada)`**, y la función `refreshAuction()` bloquea cualquier intento de consultar o incorporar nuevas postulaciones.
+  - **Header de Subasta Finalizada:** El indicador en vivo cambia a `🔒 SUBASTA FINALIZADA | • Adjudicado con [Institución]`, con el título `Licitación Concluida — Línea Asignada` y mensaje explicativo sobre el cierre formal del concurso.
+  - Este candado integral erradica el riesgo de fraude o sobreendeudamiento concurrente (*loan stacking*).
 
 ---
 
