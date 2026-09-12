@@ -168,18 +168,54 @@ Es el núcleo interactivo para el pitch del Hackathon Crevolution 2026. Diseñad
   3. Firma digital con e.firma SAT para dispersión de fondos en menos de 24 horas hábiles.
 * Botón: `Finalizar y Volver al Dashboard`.
 
+### 5.6 Candado de Adjudicación Exclusiva (Anti-Loan Stacking)
+* Al aceptar la oferta de una institución financiera (e.g. Banco Santander México) y emitirse el Pase de Originación:
+  - Dicha oferta pasa al estado `Aceptada`, mostrando un marco esmeralda con `✓ Convenio Adjudicado en Firme` y el botón `✓ Ver Pase de Originación (Voucher)`.
+  - **Todas las demás ofertas recibidas (Konfío, Banorte, BBVA) se bloquean automáticamente en tiempo real (`Bloqueada`)**, pasando a opacidad reducida (`opacity-60 grayscale-[30%]`), con el badge `🔒 Bloqueada por Adjudicación Exclusiva` y botón desactivado `Bloqueada (Licitación Concluida)`.
+  - Este candado impide que el solicitante intente redimir múltiples códigos de convenio ante distintas entidades a partir de la misma línea de capacidad calificada.
+
 ---
 
-## 6. Lógica de Estado Reactivo (Angular Signals)
+## 6. Arquitectura de Pestañas Principales (Dual-Tab Navigation)
+
+El dashboard cuenta con un selector superior con dos vistas independientes:
+
+### Pestaña 1: `1. Originación & Licitación`
+* Comprende todo el flujo de entrada: Sincronización fiscal SAT vía Syntage, Historial Financiero CFDI, Cartera de Compradores B2B, Medidor Gauge de Score de Red y la Mesa de Licitación en Tiempo Real.
+* Cuando una oferta es adjudicada, permanece accesible para auditar las condiciones del concurso, mostrando la oferta ganadora y las ofertas bloqueadas.
+
+### Pestaña 2: `2. Monitoreo de Créditos Otorgados` (o `Mis Créditos Otorgados`)
+* **Estado Sin Crédito Adjudicado:** Despliega una vista vacía intuitiva que guía al usuario a completar su licitación en la Pestaña 1.
+* **Transición Automática:** Al pulsar `Finalizar y Volver al Dashboard` en el modal de Voucher, el orquestador navega automáticamente a esta pestaña.
+* **Resumen Ejecutivo de la Línea Activa:**
+  - Logotipo oficial de la institución otorgante (e.g. Banco Santander).
+  - Folio en Círculo de Crédito y Código de Convenio Oficial.
+  - Monto Otorgado ($1,500,000 MXN), Tasa Fija Anual (15.8% TIIE + Spread), Mensualidad ($73,250 MXN) y Próximo Vencimiento (28 Jun 2026) con estatus `Al corriente`.
+  - Botón para reabrir el Pase de Originación y código QR.
+* **Monitor de Cobranza en Vivo (CRP SAT & Alertas REDECO):**
+  - Muestra la cartera de compradores PPD cuyos flujos respaldan la amortización del crédito bancario.
+  - Barra de progreso del ciclo de auditoría: `Día 4 de 15` (progreso 27%).
+  - Interruptor reactivo de **`Simulación`** (*Simular retraso de cliente clave*):
+    - Al activarse, detecta que *Distribuidora Logística del Bajío* tiene 14 días sin emitir su Complemento de Pago (CRP), desplegando la alerta preventiva REDECO para gestionar factoraje o liquidez de soporte antes de que venza la mensualidad bancaria.
+  - Explicación de la arquitectura de costos de Syntage (**Processed Entity**): transparenta que la consulta recurrente no genera cobros dobles por RFC en el mes.
+
+---
+
+## 7. Lógica de Estado Reactivo (Angular Signals)
 ```typescript
 satConnected = signal<boolean>(false);
 isLoadingSat = signal<boolean>(false);
+showCiecModal = signal<boolean>(false);
 scoreValue = signal<number>(0);
 auctionStarted = signal<boolean>(false);
 isAuctionLoading = signal<boolean>(false);
 showAuctionModal = signal<boolean>(false);
 simulateDelay = signal<boolean>(false);
-showCiecModal = signal<boolean>(false);
+
+// Dual-Tab Navigation
+activeTab = signal<'originacion' | 'monitoreo'>('originacion');
+
+// Bidding & Lock
 receivedOffers = signal<AuctionOfferMock[]>([]);
 isRefreshingAuction = signal<boolean>(false);
 selectedOffer = signal<AuctionOfferMock | null>(null);

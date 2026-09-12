@@ -77,8 +77,61 @@
     </div>
   </header>
 
+  <!-- 2.1 Selector de Pestañas Principales (Tab Bar) -->
+  <div class="border-b border-slate-200/90 bg-white/70 backdrop-blur-md sticky top-20 z-20 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-4 sm:gap-8 overflow-x-auto">
+      
+      <!-- Tab 1: Originación & Licitación -->
+      <button 
+        (click)="switchTab('originacion')"
+        type="button"
+        id="tab-originacion"
+        class="py-3.5 px-2 text-xs sm:text-sm font-bold border-b-2 flex items-center gap-2.5 transition-all duration-200 whitespace-nowrap"
+        [ngClass]="activeTab() === 'originacion' 
+          ? 'border-indigo-600 text-indigo-700' 
+          : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <span>1. Originación & Licitación</span>
+        <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+          En curso
+        </span>
+      </button>
+
+      <!-- Tab 2: Monitoreo de Créditos Otorgados -->
+      <button 
+        (click)="switchTab('monitoreo')"
+        type="button"
+        id="tab-monitoreo"
+        class="py-3.5 px-2 text-xs sm:text-sm font-bold border-b-2 flex items-center gap-2.5 transition-all duration-200 whitespace-nowrap"
+        [ngClass]="activeTab() === 'monitoreo' 
+          ? 'border-indigo-600 text-indigo-700' 
+          : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+        <span>2. Monitoreo de Créditos Otorgados</span>
+        @if (acceptedOffer()) {
+          <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            1 Crédito Activo
+          </span>
+        } @else {
+          <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-slate-100 text-slate-500 border border-slate-200">
+            0 Activos
+          </span>
+        }
+      </button>
+
+    </div>
+  </div>
+
   <!-- Contenedor Principal del Dashboard -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 w-full flex-1 flex flex-col gap-8">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 w-full flex-1 flex flex-col gap-8">
+    
+    @if (activeTab() === 'originacion') {
+      <!-- PESTAÑA 1: ORIGINACIÓN & LICITACIÓN -->
     
     <!-- 3. Bloque de Acción Principal: Extracción Fiscal SAT con Logo Syntage -->
     <div class="glass-panel-elevated rounded-2xl p-6 border border-slate-200/90 relative overflow-hidden shadow-glass-card transition-all duration-300">
@@ -671,7 +724,13 @@
             <!-- Carrusel / Grid de Tarjetas de Ofertas Recibidas -->
             <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
               @for (offer of receivedOffers(); track offer.id) {
-                <div class="rounded-2xl p-5 border border-slate-200/90 bg-slate-50/70 hover:bg-white hover:border-indigo-300 hover:shadow-lg transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+                <div 
+                  class="rounded-2xl p-5 border transition-all duration-300 flex flex-col justify-between group relative overflow-hidden"
+                  [ngClass]="{
+                    'border-slate-200/90 bg-slate-50/70 hover:bg-white hover:border-indigo-300 hover:shadow-lg': offer.estatus !== 'Bloqueada' && offer.estatus !== 'Aceptada',
+                    'border-emerald-300 bg-emerald-50/40 ring-2 ring-emerald-500/20 shadow-md': offer.estatus === 'Aceptada',
+                    'border-slate-200 bg-slate-100/70 opacity-60 grayscale-[30%]': offer.estatus === 'Bloqueada'
+                  }">
                   
                   <!-- Glow sutil en hover -->
                   <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-xl pointer-events-none group-hover:bg-indigo-500/10 transition"></div>
@@ -697,11 +756,21 @@
                       </div>
                     </div>
 
-                    <!-- Badge de Ventaja Competitiva -->
+                    <!-- Badge de Ventaja Competitiva o Estado de Adjudicación -->
                     <div class="mb-4">
-                      <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white text-indigo-700 border border-indigo-100 shadow-sm">
-                        {{ offer.badge }}
-                      </span>
+                      @if (offer.estatus === 'Aceptada') {
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-sm">
+                          ✓ Convenio Adjudicado en Firme
+                        </span>
+                      } @else if (offer.estatus === 'Bloqueada') {
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-200 text-slate-600 border border-slate-300 shadow-sm">
+                          🔒 Bloqueada por Adjudicación Exclusiva
+                        </span>
+                      } @else {
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white text-indigo-700 border border-indigo-100 shadow-sm">
+                          {{ offer.badge }}
+                        </span>
+                      }
                     </div>
 
                     <!-- Condiciones Financieras de la Oferta -->
@@ -726,17 +795,39 @@
 
                   </div>
 
-                  <!-- Botón de Acción para Visualizar la Oferta -->
+                  <!-- Botón de Acción para Visualizar la Oferta / Estado de Bloqueo -->
                   <div class="mt-2 pt-2">
-                    <button 
-                      (click)="viewOfferDetail(offer)"
-                      type="button" 
-                      class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 shadow-sm transition-all duration-200 hover:shadow-md flex items-center justify-center gap-2">
-                      <span>Visualizar Oferta (Term Sheet)</span>
-                      <svg class="w-3.5 h-3.5 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                      </svg>
-                    </button>
+                    @if (offer.estatus === 'Aceptada') {
+                      <button 
+                        (click)="openVoucherModal()"
+                        type="button" 
+                        class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-sm transition-all flex items-center justify-center gap-2">
+                        <span>✓ Ver Pase de Originación (Voucher)</span>
+                        <svg class="w-3.5 h-3.5 text-emerald-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                      </button>
+                    } @else if (offer.estatus === 'Bloqueada') {
+                      <button 
+                        disabled
+                        type="button" 
+                        class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-400 bg-slate-200/80 border border-slate-300 cursor-not-allowed flex items-center justify-center gap-2 shadow-none">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                        <span>Bloqueada (Licitación Concluida)</span>
+                      </button>
+                    } @else {
+                      <button 
+                        (click)="viewOfferDetail(offer)"
+                        type="button" 
+                        class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 shadow-sm transition-all duration-200 hover:shadow-md flex items-center justify-center gap-2">
+                        <span>Visualizar Oferta (Term Sheet)</span>
+                        <svg class="w-3.5 h-3.5 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                      </button>
+                    }
                   </div>
 
                 </div>
@@ -759,6 +850,332 @@
       }
 
     </section>
+
+  } @else if (activeTab() === 'monitoreo') {
+    <!-- ======================================================== -->
+    <!-- PESTAÑA 2: MONITOREO DE CRÉDITOS OTORGADOS -->
+    <!-- ======================================================== -->
+    <div class="space-y-8 animate-fade-in">
+      
+      @if (!acceptedOffer()) {
+        <!-- Estado Vacío si aún no se ha adjudicado un crédito -->
+        <div class="glass-panel-elevated rounded-3xl p-12 border border-slate-200 text-center flex flex-col items-center justify-center max-w-2xl mx-auto shadow-glass-card my-6">
+          <div class="w-20 h-20 rounded-3xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-500 mb-5 shadow-sm">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-slate-900 mb-2">No hay créditos activos en monitoreo</h3>
+          <p class="text-sm text-slate-500 max-w-md mb-6 leading-relaxed">
+            Para activar el monitor de cobranza preventiva y seguimiento quincenal de pagos PPD ante el SAT, primero sincroniza tus facturas y adjudica una oferta en la pestaña de <strong>Originación & Licitación</strong>.
+          </p>
+          <button 
+            (click)="switchTab('originacion')"
+            type="button" 
+            class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 shadow-glow-indigo transition-all duration-200 hover:scale-105 active:scale-95">
+            <span>Ir a Originación & Licitación →</span>
+          </button>
+        </div>
+      } @else {
+        <!-- Resumen Ejecutivo del Crédito Activo Adjudicado -->
+        <div class="glass-panel-elevated rounded-3xl p-6 sm:p-8 border border-emerald-300 shadow-glass-card relative overflow-hidden bg-gradient-to-r from-emerald-50/40 via-white to-indigo-50/40">
+          
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-slate-200/80">
+            
+            <div class="flex items-center gap-4">
+              <!-- Logo Oficial de la Entidad Otorgante -->
+              <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-sm border border-slate-200 bg-white p-2 flex items-center justify-center shrink-0">
+                <img [src]="acceptedOffer()?.logoUrl" [alt]="acceptedOffer()?.institucion" class="w-full h-full object-contain rounded-xl" />
+              </div>
+
+              <div>
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Línea de Crédito Activa
+                  </span>
+                  <span class="text-xs text-slate-400">|</span>
+                  <span class="text-xs font-mono font-medium text-slate-500">Folio: {{ acceptedOffer()?.folioCirculo }}</span>
+                  <span class="text-xs text-slate-400">|</span>
+                  <span class="text-xs font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-200">
+                    Convenio: {{ acceptedOffer()?.codigoConvenio }}
+                  </span>
+                </div>
+                <h2 class="text-2xl font-black text-slate-900 tracking-tight">
+                  {{ acceptedOffer()?.institucion }} — Crédito Empresarial
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  Acreditado: <strong class="text-slate-800">Industrial Textil del Centro S.A. de C.V.</strong> (RFC: ITC190412AA1)
+                </p>
+              </div>
+            </div>
+
+            <!-- Botón de acceso al Voucher Oficial -->
+            <div class="shrink-0 flex items-center gap-3">
+              <button 
+                (click)="openVoucherModal()"
+                type="button"
+                class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:text-indigo-700 bg-white hover:bg-slate-50 border border-slate-300 shadow-sm transition">
+                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span>Ver Pase de Originación (QR)</span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Métricas Clave de la Facilidad Activa -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+              <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">Monto Otorgado</span>
+              <span class="text-xl sm:text-2xl font-black text-slate-900 font-mono">
+                {{ acceptedOffer()?.montoAprobado | currency:'MXN':'symbol-narrow':'1.0-0' }}
+              </span>
+              <span class="text-[10px] text-slate-400 block mt-0.5">Línea Dispuesta (MXN)</span>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+              <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">Tasa Fija Anual</span>
+              <span class="text-xl sm:text-2xl font-extrabold text-emerald-700 font-mono">
+                {{ acceptedOffer()?.tasaInteresAnual }}
+              </span>
+              <span class="text-[10px] text-emerald-600 block mt-0.5 font-semibold">Tasa Preferencial Adjudicada</span>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+              <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">Mensualidad Estimada</span>
+              <span class="text-xl sm:text-2xl font-extrabold text-indigo-700 font-mono">
+                {{ acceptedOffer()?.pagoMensualEstimado | currency:'MXN':'symbol-narrow':'1.0-0' }}
+              </span>
+              <span class="text-[10px] text-slate-400 block mt-0.5">Plazo: {{ acceptedOffer()?.plazoMeses }} meses</span>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+              <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">Próximo Vencimiento</span>
+              <span class="text-xl sm:text-2xl font-extrabold text-slate-800 font-mono">
+                28 Jun 2026
+              </span>
+              <span class="text-[10px] text-emerald-600 font-bold block mt-0.5 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Estatus: Al corriente
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Grid de Monitoreo Preventivo & Cartera Subyacente -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- Columna Izquierda: Cartera B2B de Respaldo y Flujo -->
+          <div class="lg:col-span-8 space-y-6">
+            
+            <div class="glass-panel rounded-2xl p-6 border border-slate-200/90 shadow-sm">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-2">
+                <div>
+                  <h3 class="text-lg font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                    <span>Monitor de Cobranza en Vivo: Cartera de Compradores PPD</span>
+                    <!-- Logo Círculo de Crédito -->
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 32 32" fill="none">
+                      <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="3"/>
+                      <circle cx="16" cy="16" r="9" stroke="#78BE20" stroke-width="3"/>
+                    </svg>
+                  </h3>
+                  <p class="text-xs text-slate-500 mt-0.5">
+                    El crédito con {{ acceptedOffer()?.institucion }} se amortiza mediante los flujos de cobro de estos clientes B2B.
+                  </p>
+                </div>
+                <span class="text-xs px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold self-start sm:self-auto">
+                  Auditoría Syntage Activa
+                </span>
+              </div>
+
+              <!-- Alerta temprana REDECO / CONDUSEF si simulación está activa -->
+              @if (simulateDelay()) {
+                <div class="mt-4 p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 flex items-start gap-3 animate-fade-in shadow-sm">
+                  <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                  </svg>
+                  <div class="text-xs leading-relaxed">
+                    <strong class="font-bold text-amber-950">Alerta Temprana de Cobranza (Detección a 14 Días):</strong> 
+                    Distribuidora Logística del Bajío no ha emitido su Complemento de Pago (CRP). NexoRisk ha pre-notificado a {{ acceptedOffer()?.institucion }} para activar líneas de factoraje preventivo antes del vencimiento mensual de tu cuota, evitando reportes negativos en Círculo de Crédito y llamadas de cobranza (Normativa REDECO / CONDUSEF).
+                  </div>
+                </div>
+              }
+
+              <!-- Tabla de Clientes -->
+              <div class="mt-4 overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                  <thead>
+                    <tr class="text-xs uppercase font-semibold text-slate-500 bg-slate-50/80 border-b border-slate-200">
+                      <th class="py-3 px-3.5 rounded-l-lg">Cliente B2B</th>
+                      <th class="py-3 px-3.5 text-center">Part. %</th>
+                      <th class="py-3 px-3.5 text-center">Plazo Prom.</th>
+                      <th class="py-3 px-3.5 text-center">Score Círculo</th>
+                      <th class="py-3 px-3.5 text-center">Riesgo Cadena</th>
+                      <th class="py-3 px-3.5 text-right rounded-r-lg">Estatus de Cobro</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    @for (client of displayClients(); track client.rfc) {
+                      <tr class="hover:bg-indigo-50/30 transition-colors">
+                        <td class="py-3.5 px-3.5">
+                          <div class="font-semibold text-slate-900 text-sm">{{ client.cliente }}</div>
+                          <div class="font-mono text-xs text-slate-500">{{ client.rfc }}</div>
+                        </td>
+                        <td class="py-3.5 px-3.5 text-center">
+                          <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-bold bg-slate-100 text-slate-800">
+                            {{ client.participacionPorcentaje }}%
+                          </span>
+                        </td>
+                        <td class="py-3.5 px-3.5 text-center text-xs text-slate-600 font-medium">
+                          {{ client.plazoPromedioDias }} días
+                        </td>
+                        <td class="py-3.5 px-3.5 text-center">
+                          <span class="font-mono font-bold text-sm text-slate-900">{{ client.scoreCirculoCredito }}</span>
+                          <span class="text-[10px] text-slate-400 block font-sans">pts</span>
+                        </td>
+                        <td class="py-3.5 px-3.5 text-center">
+                          @if (client.scoreCirculoCredito >= 750 && client.calificacionCadena === 'A+') {
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                              A+ / Excelente
+                            </span>
+                          } @else if (client.calificacionCadena === 'A') {
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-50 text-teal-800 border border-teal-200">
+                              A / Solvente
+                            </span>
+                          } @else {
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                              {{ client.calificacionCadena }} / Moderado
+                            </span>
+                          }
+                        </td>
+                        <td class="py-3.5 px-3.5 text-right">
+                          @if (client.estatusPago === 'Al corriente') {
+                            <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50/80 px-2.5 py-1 rounded-md border border-emerald-200/60">
+                              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                              CRP Timbrado al SAT
+                            </span>
+                          } @else {
+                            <span class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-900 bg-amber-100 px-2.5 py-1 rounded-md border border-amber-300 animate-pulse">
+                              <svg class="w-3.5 h-3.5 text-amber-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                              </svg>
+                              Sin CRP (14 días demora)
+                            </span>
+                          }
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+
+            <!-- Candado Antifraude & Prevención de Cartera Vencida -->
+            <div class="p-5 rounded-2xl bg-indigo-50/60 border border-indigo-200 flex items-start gap-4">
+              <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shrink-0 shadow-sm mt-0.5">
+                <svg class="w-5 h-5" viewBox="0 0 32 32" fill="none">
+                  <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="3"/>
+                  <circle cx="16" cy="16" r="9" stroke="#34D399" stroke-width="3"/>
+                  <circle cx="16" cy="16" r="4" fill="currentColor"/>
+                </svg>
+              </div>
+              <div class="text-xs text-slate-700 space-y-1">
+                <strong class="font-bold text-indigo-950 text-sm block">Candado Antifraude SIC & Prevención de Mora:</strong>
+                <p>
+                  Al adjudicarse la oferta de <strong>{{ acceptedOffer()?.institucion }}</strong>, Círculo de Crédito registró la reserva exclusiva de capacidad de pago. Las demás posturas de licitación quedaron formalmente bloqueadas para evitar duplicidad o endeudamiento paralelo, garantizando una cartera sana y cumplimiento normativo.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Columna Derecha: Controles de Monitoreo Quincenal y Toggle de Simulación -->
+          <div class="lg:col-span-4 space-y-6">
+            
+            <div class="glass-panel-elevated rounded-2xl p-6 border border-slate-200/90 shadow-glass-card">
+              
+              <div class="flex items-start justify-between pb-4 border-b border-slate-100 gap-3">
+                <div>
+                  <h3 class="text-base font-bold text-slate-900 tracking-tight">
+                    Control de Ciclo Quincenal
+                  </h3>
+                  <p class="text-[11px] text-slate-500 mt-0.5">
+                    Auditoría periódica de CRP ante el SAT vía Syntage Scheduler.
+                  </p>
+                </div>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+              </div>
+
+              <!-- Mecanismo de Simulación: "Simulación" (Sin 'Pitch') -->
+              <div class="my-4 p-4 rounded-xl bg-indigo-50/70 border border-indigo-200 flex items-center justify-between shadow-sm">
+                <div class="text-xs">
+                  <span class="font-extrabold text-slate-900 block">Simulación</span>
+                  <span class="text-[11px] text-indigo-700 font-medium">Simular retraso de cliente clave</span>
+                </div>
+                
+                <button 
+                  (click)="toggleDemoDelay()"
+                  type="button"
+                  id="toggle-simulacion-monitoreo"
+                  class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none shadow-inner"
+                  [ngClass]="simulateDelay() ? 'bg-amber-500' : 'bg-slate-300'">
+                  <span 
+                    class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out"
+                    [ngClass]="simulateDelay() ? 'translate-x-5' : 'translate-x-0'">
+                  </span>
+                </button>
+              </div>
+
+              <!-- Progreso del Ciclo Quincenal -->
+              <div class="space-y-2 mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-slate-600 font-medium">Ciclo de Monitoreo Quincenal:</span>
+                  <span class="text-indigo-600 font-bold font-mono">Día 4 de 15</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
+                  <div class="bg-gradient-to-r from-indigo-500 to-emerald-500 h-full rounded-full w-[27%]"></div>
+                </div>
+                <div class="flex items-center justify-between text-[10px] text-slate-400 pt-1">
+                  <span>Último corte: 11 Jun</span>
+                  <span class="font-bold text-slate-600">Próximo corte: 26 Jun</span>
+                </div>
+              </div>
+
+              <!-- Arquitectura de Costos Syntage (Transparencia Operativa) -->
+              <div class="mt-4 p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200 text-xs text-emerald-950 space-y-1.5">
+                <div class="font-bold flex items-center gap-1.5 text-emerald-900">
+                  <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 32 32" fill="none">
+                    <path d="M8 16.5C8 12 11.5 8.5 16 8.5H23V13.5H16C14.3 13.5 13 14.8 13 16.5C13 18.2 14.3 19.5 16 19.5H19C21.8 19.5 24 21.7 24 24.5C24 27.3 21.8 29.5 19 29.5H9V24.5H19C19.6 24.5 20 24.1 20 23.5C20 22.9 19.6 22.5 19 22.5H16C11.5 22.5 8 19 8 14.5V16.5Z" fill="currentColor"/>
+                    <circle cx="23" cy="8.5" r="2.5" fill="#059669"/>
+                  </svg>
+                  <span>Eficiencia Syntage (Processed Entity):</span>
+                </div>
+                <p class="text-[11px] leading-relaxed text-emerald-900">
+                  Este RFC cuenta como <strong>1 sola Entidad Procesada</strong> en el mes calendario ante Syntage. Las extracciones quincenales automáticas no duplican costos de enrolamiento, maximizando el margen de la plataforma.
+                </p>
+              </div>
+
+              <div class="mt-6 pt-3 border-t border-slate-100">
+                <button 
+                  (click)="switchTab('originacion')"
+                  type="button" 
+                  class="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-600 hover:text-indigo-600 hover:bg-slate-50 border border-slate-200 transition text-center block">
+                  ← Volver a Mesa de Licitación
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      }
+
+    </div>
+  }
 
   </main>
 

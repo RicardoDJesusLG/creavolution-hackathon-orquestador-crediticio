@@ -26,6 +26,9 @@ export class OrchestratorDashboardComponent {
   readonly showAuctionModal = signal<boolean>(false);
   readonly simulateDelay = signal<boolean>(false);
 
+  // Dashboard Navigation Tabs (Originación vs Monitoreo de Créditos Otorgados)
+  readonly activeTab = signal<'originacion' | 'monitoreo'>('originacion');
+
   // Real-time Bidding & Offers State
   readonly receivedOffers = signal<AuctionOfferMock[]>([]);
   readonly isRefreshingAuction = signal<boolean>(false);
@@ -201,15 +204,38 @@ export class OrchestratorDashboardComponent {
 
   /**
    * Accepts an offer, locks in terms, and opens the official Convenio voucher
+   * Prevents Loan Stacking by exclusively locking the remaining offers
    */
   acceptOffer(offer: AuctionOfferMock): void {
     this.showOfferDetailModal.set(false);
     this.acceptedOffer.set(offer);
+
+    // Candado de Adjudicación Exclusiva: bloquea las demás ofertas en tiempo real
+    this.receivedOffers.update(offers =>
+      offers.map(o => {
+        if (o.id === offer.id) {
+          return { ...o, estatus: 'Aceptada' as const };
+        } else {
+          return { ...o, estatus: 'Bloqueada' as const };
+        }
+      })
+    );
+
     this.showVoucherModal.set(true);
   }
 
   closeVoucherModal(): void {
     this.showVoucherModal.set(false);
+    // Transiciona automáticamente a la vista de Monitoreo de Créditos Otorgados
+    this.activeTab.set('monitoreo');
+  }
+
+  openVoucherModal(): void {
+    this.showVoucherModal.set(true);
+  }
+
+  switchTab(tab: 'originacion' | 'monitoreo'): void {
+    this.activeTab.set(tab);
   }
 
   /**

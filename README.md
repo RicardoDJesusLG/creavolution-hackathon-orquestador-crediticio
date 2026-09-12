@@ -89,7 +89,9 @@ El dashboard (`/orquestador`) ofrece dos flujos interactivos para la presentaci�
    - **Llegada en Vivo (1° Clic en Refrescar):** Al pulsar **`Consultar Posturas en Vivo (Refrescar Licitación)`**, ingresan en tiempo real las posturas de **Banco Santander México** y **Konfío** con sus imágenes vectoriales oficiales, tasas y plazos (`2 de 4 posturas`).
    - **Licitación Competitiva (Siguientes Clics):** Al volver a pulsar **`Refrescar Licitación`**, ingresa **Banorte** (`3 de 4`) y posteriormente **BBVA** (`4 de 4`), simulando la puja dinámica multibancaria en vivo.
    - **Inspección de Condiciones (Term Sheet):** Haz clic en **`Visualizar Oferta (Term Sheet)`** en cualquiera de las entidades para desplegar el desglose formal de condiciones (monto aprobado, tasa anualizada TIIE + Spread, pago mensual y certificación SIC).
-   - **Formalización y Voucher:** Haz clic en **`Aceptar Oferta y Generar Código de Convenio →`** para emitir el **Pase de Originación de Crédito (Voucher)** con el logo oficial del banco seleccionado, token B2B único copiable al portapapeles (`SAN-NXR-2026-9812-B2B`), código QR vectorial nítido para sucursal o ventanilla empresarial y directrices para dispersión en 24h con e.firma SAT.
+    - **Formalización y Voucher:** Haz clic en **`Aceptar Oferta y Generar Código de Convenio →`** para emitir el **Pase de Originación de Crédito (Voucher)** con el logo oficial del banco seleccionado, token B2B único copiable al portapapeles (`SAN-NXR-2026-9812-B2B`), código QR vectorial nítido para sucursal o ventanilla empresarial y directrices para dispersión en 24h con e.firma SAT.
+    - **Candado de Adjudicación Exclusiva (Anti-Loan Stacking):** Al aceptar la oferta de Santander, todas las demás posturas (Konfío, Banorte, BBVA) se bloquean en tiempo real (`🔒 Bloqueada por Adjudicación Exclusiva`), impidiendo el doble financiamiento.
+    - **Navegación Automática a Monitoreo:** Al pulsar `Finalizar y Volver al Dashboard`, el sistema transiciona a la pestaña **`2. Monitoreo de Créditos Otorgados`**, donde se presenta la facilidad activa ($1.5M MXN), el ciclo quincenal de auditoría CRP ante el SAT (Día 4 de 15) y el switch de simulación de mora preventiva.
 
 ### Opción B: Demostración Pre-Extracción (Caso con Riesgo Comercial Inicial)
 1. **Paso 1:** Antes de conectar el SAT, activar el interruptor **`Simulación`**.
@@ -98,6 +100,10 @@ El dashboard (`/orquestador`) ofrece dos flujos interactivos para la presentaci�
 4. **Paso 4:** Desactivar la simulación para mostrar cómo la subsanación del retraso eleva la calificación a **88 puntos**.
 
 ---
+
+## 🔒 Candado Antifraude & Prevención de Mora
+- **En Licitación:** El candado en Círculo de Crédito bloquea consultas concurrentes y, una vez adjudicada una postura, congela las restantes para garantizar la exclusividad del crédito.
+- **En Monitoreo Quincenal:** Syntage sincroniza los Complementos de Recepción de Pagos (CRP) cada 15 días. Al facturarse bajo el modelo de *Processed Entity*, esta verificación recurrente no duplica cargos por RFC en el mes, garantizando viabilidad financiera y márgenes superiores al 85%.
 
 ## ⚖️ Aviso Legal y Cumplimiento
 *Prototipo conceptual desarrollado exclusivamente con fines de evaluación técnica y demostración de producto en el marco del Hackathon Crevolution 2026. Los datos fiscales y de personas morales mostrados son simulados para fines de demostración.*

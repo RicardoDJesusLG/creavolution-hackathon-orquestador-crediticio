@@ -31,5 +31,5 @@ export interface AuctionOfferMock {
   vigenciaOfertaDias: number;
   logoType: 'santander' | 'konfio' | 'banorte' | 'bbva';
   logoUrl: string;
-  estatus: 'Recibida' | 'En evaluación' | 'Aceptada';
+  estatus: 'Recibida' | 'En evaluación' | 'Aceptada' | 'Bloqueada';
 }
