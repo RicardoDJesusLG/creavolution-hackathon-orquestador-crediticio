@@ -1,0 +1,642 @@
+<div class="min-h-screen bg-slate-50 text-slate-800 selection:bg-indigo-600 selection:text-white flex flex-col relative pb-16">
+
+  <!-- Subtle Pastel Ambient Glows -->
+  <div class="absolute top-0 right-1/4 w-[700px] h-[350px] bg-indigo-500/10 blur-[140px] pointer-events-none -z-10"></div>
+  <div class="absolute bottom-0 left-1/4 w-[600px] h-[320px] bg-emerald-500/10 blur-[130px] pointer-events-none -z-10"></div>
+  <div class="absolute top-1/2 left-10 w-[500px] h-[300px] bg-blue-500/5 blur-[120px] pointer-events-none -z-10"></div>
+
+  <!-- 2. Barra Superior de Control y Estatus (TopBar) -->
+  <header class="sticky top-0 z-30 w-full glass-panel border-b border-slate-200/90 backdrop-blur-md transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-2 sm:py-0">
+      
+      <!-- Izquierda: Volver a inicio y Título -->
+      <div class="flex items-center gap-4">
+        <a routerLink="/" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-indigo-600 bg-white hover:bg-slate-50 border border-slate-200 shadow-sm transition">
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          <span>Inicio</span>
+        </a>
+        <div class="h-5 w-px bg-slate-200 hidden sm:block"></div>
+        <div>
+          <h1 class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+            Panel de Orquestación y Licitación PyME
+          </h1>
+        </div>
+      </div>
+
+      <!-- Centro: Identificador de la Empresa -->
+      <div class="hidden lg:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/90 border border-slate-200 text-xs shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+        <span class="font-semibold text-slate-800">Industrial Textil del Centro S.A. de C.V.</span>
+        <span class="text-slate-300">|</span>
+        <span class="font-mono text-indigo-600 font-medium">RFC: ITC190412AA1</span>
+      </div>
+
+      <!-- Derecha: Badges de Estado reactivos con LOGOS OFICIALES -->
+      <div class="flex items-center gap-3">
+        
+        <!-- Badge Syntage API con LOGO OFICIAL -->
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-sm">
+          <!-- Logo Oficial Syntage SVG -->
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="#4F46E5"/>
+            <path d="M9 16.5C9 12.3579 12.3579 9 16.5 9H23V13.5H16.5C14.8431 13.5 13.5 14.8431 13.5 16.5C13.5 18.1569 14.8431 19.5 16.5 19.5H18.5C20.9853 19.5 23 21.5147 23 24C23 26.4853 20.9853 28.5 18.5 28.5H9V24H18.5C19.0523 24 19.5 23.5523 19.5 23C19.5 22.4477 19.0523 22 18.5 22H16.5C12.3579 22 9 18.6421 9 14.5V16.5Z" fill="white"/>
+            <circle cx="23" cy="9" r="2.5" fill="#34D399"/>
+          </svg>
+          <span class="font-medium">Syntage API:</span>
+          <span class="text-emerald-700 font-bold">Conectada</span>
+        </div>
+
+        <!-- Badge Candado Círculo de Crédito con LOGO OFICIAL -->
+        @if (!auctionStarted()) {
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 shadow-sm">
+            <!-- Logo Oficial Círculo de Crédito SVG -->
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="2.5" stroke-dasharray="60 20"/>
+              <circle cx="16" cy="16" r="9" stroke="#78BE20" stroke-width="2.5" stroke-dasharray="35 15"/>
+              <circle cx="16" cy="16" r="3.5" fill="#004F9F"/>
+            </svg>
+            <span class="text-slate-500">Candado Círculo de Crédito:</span>
+            <span class="font-semibold text-slate-700">Standby</span>
+          </div>
+        } @else {
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-900 border border-indigo-300 shadow-glow-indigo animate-pulse">
+            <!-- Logo Oficial Círculo de Crédito SVG Activo -->
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="2.5"/>
+              <circle cx="16" cy="16" r="9" stroke="#10B981" stroke-width="2.5"/>
+              <circle cx="16" cy="16" r="4" fill="#004F9F"/>
+            </svg>
+            <span class="font-bold text-indigo-950">🔒 Candado Activo: Protegido contra Loan Stacking</span>
+          </div>
+        }
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Contenedor Principal del Dashboard -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 w-full flex-1 flex flex-col gap-8">
+    
+    <!-- 3. Bloque de Acción Principal: Extracción Fiscal SAT con Logo Syntage -->
+    <div class="glass-panel-elevated rounded-2xl p-6 border border-slate-200/90 relative overflow-hidden shadow-glass-card transition-all duration-300">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        
+        <!-- Info de la sincronización -->
+        <div class="space-y-1.5">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200">
+              Paso 1: Originación Fiscal
+            </span>
+            <span class="text-xs text-slate-500 font-medium">Extracción automatizada CIEC</span>
+          </div>
+          <h2 class="text-xl font-bold text-slate-900 tracking-tight">
+            Sincronización de Facturación SAT y Validación de Cumplimiento
+          </h2>
+          <p class="text-sm text-slate-600">
+            @if (!satConnected()) {
+              Extrae tu facturación electrónica viva del SAT para activar el análisis de solvencia de red y conciliación de clientes PPD.
+            } @else {
+              Bóveda fiscal auditada en tiempo real. 1,420 CFDIs conciliados con lista negra 69-B libre de incidencias.
+            }
+          </p>
+        </div>
+
+        <!-- Botón / Chip de Estado con LOGO OFICIAL DE SYNTAGE -->
+        <div class="shrink-0">
+          @if (!satConnected()) {
+            <button 
+              (click)="connectSat()" 
+              [disabled]="isLoadingSat()"
+              type="button" 
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-500 hover:to-indigo-700 shadow-glow-indigo transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-85 disabled:cursor-not-allowed">
+              @if (isLoadingSat()) {
+                <!-- Spinner SVG -->
+                <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Leyendo CFDIs y declaraciones en el SAT...</span>
+              } @else {
+                <!-- Logo Oficial Syntage Blanco -->
+                <div class="w-6 h-6 rounded-md bg-white/20 p-0.5 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-white" viewBox="0 0 32 32" fill="none">
+                    <path d="M8 16.5C8 12 11.5 8.5 16 8.5H23V13.5H16C14.3 13.5 13 14.8 13 16.5C13 18.2 14.3 19.5 16 19.5H19C21.8 19.5 24 21.7 24 24.5C24 27.3 21.8 29.5 19 29.5H9V24.5H19C19.6 24.5 20 24.1 20 23.5C20 22.9 19.6 22.5 19 22.5H16C11.5 22.5 8 19 8 14.5V16.5Z" fill="currentColor"/>
+                    <circle cx="23" cy="8.5" r="2.5" fill="#34D399"/>
+                  </svg>
+                </div>
+                <span>Conectar SAT vía Syntage (CIEC)</span>
+              }
+            </button>
+          } @else {
+            <div class="inline-flex items-center gap-3 px-5 py-3 rounded-xl font-semibold text-emerald-800 bg-emerald-50 border border-emerald-300 shadow-sm animate-fade-in">
+              <!-- Logo Oficial Syntage -->
+              <svg class="w-5 h-5 shrink-0" viewBox="0 0 32 32" fill="none">
+                <rect width="32" height="32" rx="7" fill="#059669"/>
+                <path d="M8 16.5C8 12 11.5 8.5 16 8.5H23V13.5H16C14.3 13.5 13 14.8 13 16.5C13 18.2 14.3 19.5 16 19.5H19C21.8 19.5 24 21.7 24 24.5C24 27.3 21.8 29.5 19 29.5H9V24.5H19C19.6 24.5 20 24.1 20 23.5C20 22.9 19.6 22.5 19 22.5H16C11.5 22.5 8 19 8 14.5V16.5Z" fill="white"/>
+                <circle cx="23" cy="8.5" r="2.5" fill="#A7F3D0"/>
+              </svg>
+              <span>✓ Expediente Fiscal Sincronizado (1,420 Facturas Procesadas)</span>
+            </div>
+          }
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 4. Grid Principal (Layout de 2 Columnas: 65% / 35%) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- ============================================ -->
+      <!-- COLUMNA IZQUIERDA (65% width = lg:col-span-8) -->
+      <!-- ============================================ -->
+      <div class="lg:col-span-8 space-y-8">
+        
+        <!-- Panel A: Conciliación Financiera Semestral -->
+        <div class="glass-panel rounded-2xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-2">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                <span>Historial Financiero Operativo</span>
+                <span class="text-xs font-medium text-indigo-600">(Base SAT CFDI 4.0)</span>
+              </h3>
+              <p class="text-xs text-slate-500">Conciliación mensual de ingresos facturados vs egresos reportados.</p>
+            </div>
+            
+            @if (satConnected()) {
+              <div class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                6 meses procesados
+              </div>
+            }
+          </div>
+
+          <!-- Contenido de la Tabla -->
+          @if (!satConnected()) {
+            <!-- Estado vacío antes de conectar el SAT -->
+            <div class="py-16 text-center flex flex-col items-center justify-center">
+              <div class="w-16 h-16 rounded-2xl bg-indigo-50/60 border border-indigo-100 flex items-center justify-center text-indigo-400 mb-4 shadow-sm">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+              </div>
+              <h4 class="text-base font-semibold text-slate-800 mb-1">Esperando conexión con el SAT...</h4>
+              <p class="text-xs text-slate-500 max-w-sm mb-4">
+                Haz clic en el botón superior para autenticar con Syntage y cargar los CFDIs de ingresos y egresos.
+              </p>
+              <button (click)="connectSat()" class="text-xs font-bold text-indigo-600 hover:text-indigo-700 inline-flex items-center gap-1">
+                Iniciar extracción ahora →
+              </button>
+            </div>
+          } @else {
+            <!-- Tabla con datos completos -->
+            <div class="mt-4 overflow-x-auto animate-fade-in">
+              <table class="w-full text-left text-sm">
+                <thead>
+                  <tr class="text-xs uppercase font-semibold text-slate-500 bg-slate-50/80 border-b border-slate-200">
+                    <th class="py-3 px-3.5 rounded-l-lg">Mes</th>
+                    <th class="py-3 px-3.5">Ventas (Ingresos)</th>
+                    <th class="py-3 px-3.5">Gastos (Egresos)</th>
+                    <th class="py-3 px-3.5">Flujo Neto Operativo</th>
+                    <th class="py-3 px-3.5 text-right rounded-r-lg">Facturación PPD</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  @for (item of financialMetrics; track item.mes) {
+                    <tr class="hover:bg-indigo-50/30 transition-colors">
+                      <td class="py-3.5 px-3.5 font-semibold text-slate-800 flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                        {{ item.mes }}
+                      </td>
+                      <td class="py-3.5 px-3.5 text-slate-700 font-medium">
+                        {{ item.ingresosCfdi | currency:'MXN':'symbol-narrow':'1.0-0' }} MXN
+                      </td>
+                      <td class="py-3.5 px-3.5 text-slate-500">
+                        {{ item.egresosCfdi | currency:'MXN':'symbol-narrow':'1.0-0' }} MXN
+                      </td>
+                      <td class="py-3.5 px-3.5">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                          +{{ item.flujoOperativo | currency:'MXN':'symbol-narrow':'1.0-0' }}
+                        </span>
+                      </td>
+                      <td class="py-3.5 px-3.5 text-right text-indigo-700 font-bold font-mono">
+                        {{ item.facturacionPpd | currency:'MXN':'symbol-narrow':'1.0-0' }}
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+
+        </div>
+
+        <!-- Panel B: Concentración de Clientes Clave (Base del Graph Scoring) -->
+        <div class="glass-panel rounded-2xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-2">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                <span>Cartera de Clientes B2B & Evaluación en Círculo de Crédito</span>
+                <!-- Logo Círculo de Crédito en header de tabla -->
+                <svg class="w-4 h-4 shrink-0" viewBox="0 0 32 32" fill="none">
+                  <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="3"/>
+                  <circle cx="16" cy="16" r="9" stroke="#78BE20" stroke-width="3"/>
+                </svg>
+              </h3>
+              <p class="text-xs text-slate-500 mt-0.5">
+                Calificación basada en el comportamiento crediticio de las empresas que compran a crédito (PPD).
+              </p>
+            </div>
+            
+            <span class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200 font-semibold self-start sm:self-auto">
+              4 Compradores Evaluados
+            </span>
+          </div>
+
+          <!-- Alerta REDECO en caso de simulación activa -->
+          @if (simulateDelay()) {
+            <div class="mt-4 p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 flex items-start gap-3 animate-fade-in shadow-sm">
+              <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              <div class="text-xs">
+                <strong class="font-bold text-amber-950">Alerta Temprana Activada:</strong> 
+                Sugerida reestructura preventiva o factoraje de liquidez antes del corte bancario (Cumplimiento REDECO / CONDUSEF).
+              </div>
+            </div>
+          }
+
+          <!-- Tabla de Clientes -->
+          <div class="mt-4 overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead>
+                <tr class="text-xs uppercase font-semibold text-slate-500 bg-slate-50/80 border-b border-slate-200">
+                  <th class="py-3 px-3.5 rounded-l-lg">Razón Social del Cliente</th>
+                  <th class="py-3 px-3.5 text-center">Part. %</th>
+                  <th class="py-3 px-3.5 text-center">Plazo Prom.</th>
+                  <th class="py-3 px-3.5 text-center">Score Círculo</th>
+                  <th class="py-3 px-3.5 text-center">Riesgo Cadena</th>
+                  <th class="py-3 px-3.5 text-right rounded-r-lg">Estatus de Pago</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                @for (client of displayClients(); track client.rfc) {
+                  <tr class="hover:bg-indigo-50/30 transition-colors">
+                    
+                    <!-- Razón Social + RFC -->
+                    <td class="py-3.5 px-3.5">
+                      <div class="font-semibold text-slate-900 text-sm">{{ client.cliente }}</div>
+                      <div class="font-mono text-xs text-slate-500">{{ client.rfc }}</div>
+                    </td>
+
+                    <!-- Part % -->
+                    <td class="py-3.5 px-3.5 text-center">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-bold bg-slate-100 text-slate-800">
+                        {{ client.participacionPorcentaje }}%
+                      </span>
+                    </td>
+
+                    <!-- Plazo -->
+                    <td class="py-3.5 px-3.5 text-center text-xs text-slate-600 font-medium">
+                      {{ client.plazoPromedioDias }} días
+                    </td>
+
+                    <!-- Score Círculo -->
+                    <td class="py-3.5 px-3.5 text-center">
+                      <span class="font-mono font-bold text-sm text-slate-900">{{ client.scoreCirculoCredito }}</span>
+                      <span class="text-[10px] text-slate-400 block font-sans">pts</span>
+                    </td>
+
+                    <!-- Riesgo Cadena -->
+                    <td class="py-3.5 px-3.5 text-center">
+                      @if (client.scoreCirculoCredito >= 750 && client.calificacionCadena === 'A+') {
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                          A+ / Excelente
+                        </span>
+                      } @else if (client.calificacionCadena === 'A') {
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-50 text-teal-800 border border-teal-200">
+                          A / Solvente
+                        </span>
+                      } @else {
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                          {{ client.calificacionCadena }} / Moderado
+                        </span>
+                      }
+                    </td>
+
+                    <!-- Estatus Pago -->
+                    <td class="py-3.5 px-3.5 text-right">
+                      @if (client.estatusPago === 'Al corriente') {
+                        <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50/80 px-2 py-1 rounded-md border border-emerald-200/60">
+                          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                          Al corriente
+                        </span>
+                      } @else {
+                        <span class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-900 bg-amber-100 px-2.5 py-1 rounded-md border border-amber-300 animate-pulse">
+                          <svg class="w-3.5 h-3.5 text-amber-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                          </svg>
+                          Retraso de 14 días (PPD)
+                        </span>
+                      }
+                    </td>
+
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ============================================ -->
+      <!-- COLUMNA DERECHA (35% width = lg:col-span-4)  -->
+      <!-- ============================================ -->
+      <div class="lg:col-span-4 space-y-8">
+        
+        <!-- Tarjeta 1: Medidor de Calificación de Red B2B (Gauge SVG) -->
+        <div class="glass-panel-elevated rounded-2xl p-6 border border-slate-200/90 shadow-glass-card relative">
+          <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+            <h3 class="text-base font-bold text-slate-900 tracking-tight">Score de Red NexoRisk</h3>
+            <span class="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+              Graph Engine
+            </span>
+          </div>
+
+          <!-- Gauge SVG Semicircular de 180 Grados en fondo claro -->
+          <div class="flex flex-col items-center justify-center pt-5">
+            <div class="relative w-64 h-36 flex items-center justify-center">
+              <svg class="w-full h-full overflow-visible" viewBox="0 0 200 120">
+                <defs>
+                  <linearGradient id="gaugeGradientLight" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#4F46E5" />
+                    <stop offset="50%" stop-color="#059669" />
+                    <stop offset="100%" stop-color="#10B981" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Arco de Fondo (Gris Claro Suave) -->
+                <path 
+                  d="M 25 105 A 75 75 0 0 1 175 105" 
+                  fill="none" 
+                  stroke="#E2E8F0" 
+                  stroke-width="16" 
+                  stroke-linecap="round" />
+
+                <!-- Arco de Progreso con Gradiente Vívido -->
+                <path 
+                  d="M 25 105 A 75 75 0 0 1 175 105" 
+                  fill="none" 
+                  stroke="url(#gaugeGradientLight)" 
+                  stroke-width="16" 
+                  stroke-linecap="round" 
+                  stroke-dasharray="235.62"
+                  [style.strokeDashoffset]="gaugeDashOffset()"
+                  class="transition-all duration-700 ease-out" />
+              </svg>
+
+              <!-- Texto Numérico y Rating en el Centro del Semicírculo -->
+              <div class="absolute bottom-2 text-center flex flex-col items-center">
+                <div class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight font-sans">
+                  {{ scoreValue() }}
+                </div>
+                <div class="text-[11px] font-semibold text-slate-400 mt-0.5">
+                  de 100 puntos
+                </div>
+              </div>
+            </div>
+
+            <!-- Subtexto dinámico de estatus -->
+            <div class="mt-3 text-center">
+              <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold transition-all duration-300"
+                [ngClass]="{
+                  'bg-slate-100 text-slate-500 border border-slate-200': scoreValue() === 0,
+                  'bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-sm': scoreValue() >= 80,
+                  'bg-amber-50 text-amber-900 border border-amber-300': scoreValue() > 0 && scoreValue() < 80
+                }">
+                {{ scoreStatusText() }}
+              </span>
+            </div>
+
+            <!-- Dictamen del Algoritmo -->
+            <div class="mt-5 w-full p-4 rounded-xl bg-slate-50 border border-slate-200/90 text-xs text-slate-700 leading-relaxed text-left">
+              <div class="text-[10px] uppercase font-bold text-slate-500 mb-1 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Dictamen del Algoritmo
+              </div>
+              <p class="font-normal text-slate-700">{{ algorithmAssessment() }}</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Tarjeta 2: Monitor de Cartera B2B & Cobranza Preventiva (Feature Quincenal) -->
+        <div class="glass-panel rounded-2xl p-6 border border-slate-200/90 shadow-sm relative">
+          
+          <!-- Header -->
+          <div class="flex items-start justify-between pb-4 border-b border-slate-100 gap-3">
+            <div>
+              <h3 class="text-base font-bold text-slate-900 tracking-tight">
+                Monitoreo de Cobranza & Pagos PPD
+              </h3>
+              <p class="text-[11px] text-slate-500 mt-0.5">
+                Auditoría periódica de CRP ante el SAT y alertas de Círculo de Crédito.
+              </p>
+            </div>
+          </div>
+
+          <!-- Mecanismo de Simulación: "Simulación" (Sin 'Pitch') -->
+          <div class="my-4 p-3.5 rounded-xl bg-indigo-50/50 border border-indigo-100 flex items-center justify-between shadow-sm">
+            <div class="text-xs">
+              <span class="font-bold text-slate-900 block">Simulación</span>
+              <span class="text-[11px] text-indigo-700 font-medium">Simular retraso de cliente clave</span>
+            </div>
+            
+            <button 
+              (click)="toggleDemoDelay()"
+              type="button"
+              class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none shadow-inner"
+              [ngClass]="simulateDelay() ? 'bg-amber-500' : 'bg-slate-300'">
+              <span 
+                class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out"
+                [ngClass]="simulateDelay() ? 'translate-x-5' : 'translate-x-0'">
+              </span>
+            </button>
+          </div>
+
+          <!-- Componente de Ciclo Quincenal -->
+          <div class="space-y-2 mt-4">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-600 font-medium">Ciclo de Monitoreo: Quincenal</span>
+              <span class="text-indigo-600 font-bold font-mono">Día 4 de 15</span>
+            </div>
+            <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+              <div class="bg-gradient-to-r from-indigo-500 to-emerald-500 h-full rounded-full w-[27%]"></div>
+            </div>
+          </div>
+
+          <!-- Botón de Consulta Restringido -->
+          <div class="mt-6 space-y-2">
+            <div class="relative">
+              <button 
+                type="button" 
+                disabled 
+                class="w-full py-3 px-4 rounded-xl text-xs font-semibold text-slate-400 bg-slate-100 border border-slate-200 cursor-not-allowed flex items-center justify-center gap-2">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                <span>🔄 Sincronizar Conciliación Fiscal & Alertas SIC</span>
+              </button>
+              <div class="absolute -top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white text-slate-700 border border-slate-300 shadow-sm">
+                Disponible en 11 días (26 de Junio)
+              </div>
+            </div>
+            
+            <p class="text-[11px] text-slate-500 leading-relaxed text-center pt-1">
+              Las consultas recurrentes se ejecutan automáticamente cada 15 días para proteger los costos operativos de la plataforma.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 5. Sección Inferior: Subasta Privada y Modal Antifraude con Logo Círculo de Crédito -->
+    <section class="mt-4">
+      <div class="glass-panel-elevated rounded-2xl p-6 sm:p-8 border border-indigo-200/80 flex flex-col md:flex-row items-center justify-between gap-6 shadow-glass-card relative overflow-hidden bg-gradient-to-r from-indigo-50/70 via-white to-emerald-50/70">
+        
+        <div class="space-y-1.5 text-center md:text-left z-10">
+          <div class="inline-flex items-center gap-2 text-xs font-bold text-indigo-700">
+            <!-- Logo Círculo de Crédito Mini -->
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="3"/>
+              <circle cx="16" cy="16" r="9" stroke="#78BE20" stroke-width="3"/>
+            </svg>
+            <span>Licitación Institucional Blindada | Círculo de Crédito</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+            ¿Deseas licitar este expediente anonimizado ante nuestra red?
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
+            Publicación directa ante más de 25 bancos, SOFOMes y fondos de deuda regulados. El candado antifraude evitará el <em class="italic text-slate-800 font-medium">loan stacking</em> bloqueando temporalmente solicitudes paralelas.
+          </p>
+        </div>
+
+        <!-- Botón de Ingreso a Subasta con LOGO CÍRCULO DE CRÉDITO -->
+        <div class="shrink-0 z-10 w-full md:w-auto">
+          <button 
+            (click)="startAuction()"
+            [disabled]="scoreValue() === 0 || isAuctionLoading() || auctionStarted()"
+            type="button" 
+            class="w-full md:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold transition-all duration-200 shadow-md"
+            [ngClass]="{
+              'bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300 shadow-none': scoreValue() === 0,
+              'bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-700 hover:from-indigo-500 hover:to-violet-600 text-white shadow-glow-indigo hover:scale-105 active:scale-95': scoreValue() > 0 && !auctionStarted(),
+              'bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-sm cursor-default': auctionStarted()
+            }">
+            @if (isAuctionLoading()) {
+              <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Activando candado en Círculo de Crédito...</span>
+            } @else if (auctionStarted()) {
+              <!-- Logo Oficial Círculo de Crédito -->
+              <svg class="w-5 h-5 shrink-0" viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="3"/>
+                <circle cx="16" cy="16" r="9" stroke="#10B981" stroke-width="3"/>
+                <circle cx="16" cy="16" r="4" fill="#004F9F"/>
+              </svg>
+              <span>Subasta Activa & Candado Operando</span>
+            } @else {
+              <!-- Logo Oficial Círculo de Crédito en el botón -->
+              <div class="w-6 h-6 rounded-full bg-white p-0.5 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 32 32" fill="none">
+                  <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="3.5"/>
+                  <circle cx="16" cy="16" r="9" stroke="#78BE20" stroke-width="3.5"/>
+                  <circle cx="16" cy="16" r="4" fill="#004F9F"/>
+                </svg>
+              </div>
+              <span>Ingresar a Subasta Privada de Crédito</span>
+            }
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal de Confirmación (Overlay con efecto Blur en Fondo Blanco) -->
+  @if (showAuctionModal()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-md p-4 animate-fade-in">
+      <div class="glass-panel-elevated rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-emerald-400 shadow-2xl relative bg-white/95">
+        
+        <!-- Logo Círculo de Crédito + Checkmark Animado -->
+        <div class="flex items-center justify-center gap-3 mb-5">
+          <div class="w-14 h-14 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center shadow-sm">
+            <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="3.5"/>
+              <circle cx="16" cy="16" r="9" stroke="#78BE20" stroke-width="3.5"/>
+              <circle cx="16" cy="16" r="4" fill="#004F9F"/>
+            </svg>
+          </div>
+          <div class="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-300 flex items-center justify-center text-emerald-600 shadow-sm">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+        </div>
+
+        <h3 class="text-2xl font-extrabold text-slate-900 text-center tracking-tight mb-2">
+          ¡Solicitud Publicada en la Subasta Privada!
+        </h3>
+        
+        <p class="text-xs sm:text-sm text-slate-600 text-center mb-6 leading-relaxed">
+          Tu expediente ha sido publicado de forma completamente anonimizada. Los bancos y SOFOMes están emitiendo sus Term Sheets. Te notificaremos cuando recibas la primera oferta formal.
+        </p>
+
+        <!-- Resumen de la Licitación -->
+        <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4 space-y-3 mb-6 text-xs">
+          <div class="flex items-center justify-between py-1 border-b border-slate-200">
+            <span class="text-slate-500 font-medium">Monto Objetivo:</span>
+            <span class="font-bold text-slate-900">$1,500,000 MXN (Capital de Trabajo)</span>
+          </div>
+          <div class="flex items-center justify-between py-1 border-b border-slate-200">
+            <span class="text-slate-500 font-medium">Tasa de Salida Estimada:</span>
+            <span class="font-bold text-emerald-700">16.2% Anual (TIIE + Spread Preferencial)</span>
+          </div>
+          <div class="flex items-center justify-between py-1">
+            <span class="text-slate-500 font-medium">Estatus Antifraude:</span>
+            <span class="font-bold text-indigo-700 flex items-center gap-1.5">
+              <!-- Círculo de Crédito Logo -->
+              <svg class="w-3.5 h-3.5" viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="14" stroke="#004F9F" stroke-width="3.5"/>
+                <circle cx="16" cy="16" r="9" stroke="#78BE20" stroke-width="3.5"/>
+              </svg>
+              Protección Activa en Círculo de Crédito
+            </span>
+          </div>
+        </div>
+
+        <!-- Botón de Cierre -->
+        <button 
+          (click)="closeAuctionModal()" 
+          type="button" 
+          class="w-full py-3.5 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-glow-emerald transition-all duration-200">
+          Entendido / Monitorear Subasta
+        </button>
+
+      </div>
+    </div>
+  }
+
+</div>
