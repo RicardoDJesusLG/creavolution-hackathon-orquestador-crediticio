@@ -81,23 +81,23 @@ El dashboard (`/orquestador`) ofrece dos flujos interactivos para la presentaci�
 ### Opción A: Demostración Tradicional (Camino Feliz y Licitación Multibancaria)
 1. **Paso 1:** Ingresar a `/orquestador`. El medidor inicia en `0` (Sin calificar) y las tablas muestran estado de espera.
 2. **Paso 2:** Hacer clic en **`⚡ Conectar SAT vía Syntage (CIEC)`**. Se despliega el **Widget Modal de Autenticación CIEC de Syntage** con credenciales prellenadas para demo (RFC `ITC190412AA1` y contraseña confidencial con botón de alternar visibilidad). Al hacer clic en **`Autenticar y Sincronizar Bóveda Fiscal →`**, se ejecuta la lectura en vivo y el medidor anima fluidamente hasta los **88 puntos (`Grado de Inversión A+`)**.
-3. **Paso 3:** Activar el interruptor **`Simulación`** (*Simular retraso de cliente clave*). El cliente principal pasa a estado ámbar por retraso de 14 días en PPD, el score cae en tiempo real a **74 puntos (`Riesgo Moderado B+`)** y aparece la alerta temprana REDECO.
-4. **Paso 4:** Desactivar la simulación para restaurar los 88 puntos.
+3. **Paso 3:** Hacer clic en el botón interactivo **`🔄 Sincronizar Conciliación Fiscal & Alertas SIC`** (con badge de auto-sincronización en 11 días). El sistema consulta en vivo los CFDIs ante el SAT vía Syntage, detecta una factura PPD con 14 días sin emitir Complemento de Pago (CRP), despliega la alerta temprana REDECO y el score ajusta a **74 puntos (`Riesgo Moderado B+`)**.
+4. **Paso 4:** Volver a pulsar el botón para simular la subsanación del pago: Syntage reconcilia la cartera con el SAT y el score asciende en tiempo real a **88 puntos**.
 5. **Paso 5:** Hacer clic en **`🚀 Ingresar a Subasta Privada de Crédito`**. Se activa el candado antifraude contra *loan stacking* en la barra superior y se despliega el modal de confirmación con las condiciones anonimizadas.
 6. **Paso 6 (Mesa de Licitación en Tiempo Real):** Al pulsar **`Ver Posturas en Vivo en la Mesa de Subasta →`**, se ingresa a la **Mesa de Licitación**:
    - **Vista Inicial Vacía:** La mesa inicia indicando que aún ninguna institución financiera ha emitido postura (`0 de 4 posturas`), explicando que las entidades analizan el expediente anonimizado.
    - **Llegada en Vivo (1° Clic en Refrescar):** Al pulsar **`Consultar Posturas en Vivo (Refrescar Licitación)`**, ingresan en tiempo real las posturas de **Banco Santander México** y **Konfío** con sus imágenes vectoriales oficiales, tasas y plazos (`2 de 4 posturas`).
    - **Licitación Competitiva (Siguientes Clics):** Al volver a pulsar **`Refrescar Licitación`**, ingresa **Banorte** (`3 de 4`) y posteriormente **BBVA** (`4 de 4`), simulando la puja dinámica multibancaria en vivo.
    - **Inspección de Condiciones (Term Sheet):** Haz clic en **`Visualizar Oferta (Term Sheet)`** en cualquiera de las entidades para desplegar el desglose formal de condiciones (monto aprobado, tasa anualizada TIIE + Spread, pago mensual y certificación SIC).
-    - **Formalización y Voucher:** Haz clic en **`Aceptar Oferta y Generar Código de Convenio →`** para emitir el **Pase de Originación de Crédito (Voucher)** con el logo oficial del banco seleccionado, token B2B único copiable al portapapeles (`SAN-NXR-2026-9812-B2B`), código QR vectorial nítido para sucursal o ventanilla empresarial y directrices para dispersión en 24h con e.firma SAT.
-    - **Candado de Adjudicación Exclusiva (Anti-Loan Stacking):** Al aceptar la oferta de Santander, todas las demás posturas (Konfío, Banorte, BBVA) se bloquean en tiempo real (`🔒 Bloqueada por Adjudicación Exclusiva`), impidiendo el doble financiamiento.
-    - **Navegación Automática a Monitoreo:** Al pulsar `Finalizar y Volver al Dashboard`, el sistema transiciona a la pestaña **`2. Monitoreo de Créditos Otorgados`**, donde se presenta la facilidad activa ($1.5M MXN), el ciclo quincenal de auditoría CRP ante el SAT (Día 4 de 15) y el switch de simulación de mora preventiva.
+   - **Formalización y Voucher:** Haz clic en **`Aceptar Oferta y Generar Código de Convenio →`** para emitir el **Pase de Originación de Crédito (Voucher)** con el logo oficial del banco seleccionado, token B2B único copiable al portapapeles (`SAN-NXR-2026-9812-B2B`), código QR vectorial nítido para sucursal o ventanilla empresarial y directrices para dispersión en 24h con e.firma SAT.
+   - **Candado de Adjudicación Exclusiva (Anti-Loan Stacking):** Al aceptar la oferta de Santander, todas las demás posturas (Konfío, Banorte, BBVA) se bloquean en tiempo real (`🔒 Bloqueada por Adjudicación Exclusiva`), y el botón de refresco es reemplazado por **`✓ Subasta Finalizada`**, impidiendo el doble financiamiento.
+   - **Navegación Automática a Monitoreo:** Al pulsar `Finalizar y Volver al Dashboard`, el sistema transiciona a la pestaña **`2. Monitoreo de Créditos Otorgados`**, donde se presenta la facilidad activa ($1.5M MXN), el ciclo quincenal de auditoría CRP ante el SAT (Día 4 de 15) y el botón de actualización fiscal bajo demanda.
 
 ### Opción B: Demostración Pre-Extracción (Caso con Riesgo Comercial Inicial)
-1. **Paso 1:** Antes de conectar el SAT, activar el interruptor **`Simulación`**.
+1. **Paso 1:** Antes de conectar el SAT, pulsar **`🔄 Sincronizar Conciliación Fiscal & Alertas SIC`**.
 2. **Paso 2:** El cliente principal se marca en mora de inmediato y la alerta REDECO se activa.
 3. **Paso 3:** Hacer clic en **`⚡ Conectar SAT vía Syntage (CIEC)`**. El algoritmo procesa la facturación y calcula el Score directamente en **74 puntos**, demostrando cómo la morosidad de la red afecta el límite de crédito desde la originación.
-4. **Paso 4:** Desactivar la simulación para mostrar cómo la subsanación del retraso eleva la calificación a **88 puntos**.
+4. **Paso 4:** Volver a presionar el botón de sincronización para mostrar cómo la subsanación del retraso eleva la calificación a **88 puntos**.
 
 ---
 

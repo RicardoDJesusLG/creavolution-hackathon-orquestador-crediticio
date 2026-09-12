@@ -84,24 +84,15 @@ Es el núcleo interactivo para el pitch del Hackathon Crevolution 2026. Diseñad
 * Descripción: *"Auditoría periódica de Complementos de Recepción de Pagos (CRP) ante el SAT y alertas de Círculo de Crédito."*
 * **Componente de Ciclo:**
   * Barra de progreso horizontal que indica: `Ciclo de Monitoreo: Quincenal (Día 4 de 15)`.
-* **Botón de Consulta Restringido:**
-  * Botón estilizado: `🔄 Sincronizar Conciliación Fiscal & Alertas SIC`.
-  * Badge sobre el botón: `Disponible en 11 días (Próximo corte programado: 26 de Junio)`.
-  * Texto al pie: *"Las consultas recurrentes se ejecutan automáticamente cada 15 días para proteger los costos operativos de la plataforma."*
-
-* **Mecanismo de Simulación Flexible (Toggle `Simulación`):**
-  * Etiqueta: **`Simulación`** (sin la palabra 'Pitch').
-  * Subtexto: *Simular retraso de cliente clave*.
-  * **Comportamiento Flexible (Pre y Post Conexión SAT):**
-    1. **Activación Previa a Conectar el SAT:**
-       - El usuario puede encender el switch **antes** de conectar el SAT.
-       - *Distribuidora Logística del Bajío S.A.* se marca en mora en la tabla de clientes (`Retraso de 14 días (PPD)` en ámbar).
-       - Se despliega la alerta temprana: `Alerta Temprana Activada: Sugerida reestructura preventiva o factoraje de liquidez antes del corte bancario (Cumplimiento REDECO).`
-       - Al pulsar **`Conectar SAT vía Syntage`**, tras la extracción el Score Gauge anima **directamente hasta 74 puntos (`Riesgo Moderado B+`)**, demostrando el impacto inicial de la morosidad.
-    2. **Activación Posterior a Conectar el SAT:**
-       - Si el SAT ya estaba conectado con score en 88, al pulsar el switch el score baja fluidamente a 74 puntos.
-    3. **Desactivación del Switch:**
-       - Al apagar el switch, el cliente vuelve a `Al corriente`, la alerta se retira y el score asciende en tiempo real a 88 puntos.
+* **Botón Interactivo de Sincronización Bajo Demanda (Syntage API):**
+  * Etiqueta: **`🔄 Sincronizar Conciliación Fiscal & Alertas SIC`**.
+  * Badge superior: `Auto-sincronización en 11 días (26 Jun)`.
+  * **Comportamiento Operativo:**
+    - Se encuentra plenamente activo tanto en la pestaña de **Originación & Licitación** como en **Monitoreo de Créditos Otorgados**.
+    - El usuario puede ejecutar la consulta en cualquier momento. Al hacer clic, despliega un spinner de carga (`Sincronizando con SAT vía Syntage...` por 1.1s).
+    - **1° Clic (Detección de Incidencia):** Syntage detecta que *Distribuidora Logística del Bajío* tiene una factura PPD con 14 días sin emitir Complemento de Pago (CRP). Despliega el toast de notificación, marca al cliente en ámbar en la tabla de clientes, activa la **Alerta Temprana REDECO / CONDUSEF** y ajusta el Score de Red a **74 puntos (`Riesgo Moderado B+`)**.
+    - **2° Clic (Conciliación Exitosa):** Syntage consulta nuevamente el SAT y valida la emisión del CRP pendiente, restaurando la cartera a *Al corriente*, retirando la alerta y elevando el score a **88 puntos**.
+  * **Sustitución de la Simulación:** Elimina los interruptores manuales de simulación, ofreciendo una experiencia empresarial realista fundamentada en la API viva de Syntage.
 
 ---
 

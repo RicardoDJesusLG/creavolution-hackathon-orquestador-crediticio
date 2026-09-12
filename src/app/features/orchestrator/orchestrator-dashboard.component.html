@@ -504,27 +504,8 @@
             </div>
           </div>
 
-          <!-- Mecanismo de Simulación: "Simulación" (Sin 'Pitch') -->
-          <div class="my-4 p-3.5 rounded-xl bg-indigo-50/50 border border-indigo-100 flex items-center justify-between shadow-sm">
-            <div class="text-xs">
-              <span class="font-bold text-slate-900 block">Simulación</span>
-              <span class="text-[11px] text-indigo-700 font-medium">Simular retraso de cliente clave</span>
-            </div>
-            
-            <button 
-              (click)="toggleDemoDelay()"
-              type="button"
-              class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none shadow-inner"
-              [ngClass]="simulateDelay() ? 'bg-amber-500' : 'bg-slate-300'">
-              <span 
-                class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out"
-                [ngClass]="simulateDelay() ? 'translate-x-5' : 'translate-x-0'">
-              </span>
-            </button>
-          </div>
-
           <!-- Componente de Ciclo Quincenal -->
-          <div class="space-y-2 mt-4">
+          <div class="space-y-2 mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
             <div class="flex items-center justify-between text-xs">
               <span class="text-slate-600 font-medium">Ciclo de Monitoreo: Quincenal</span>
               <span class="text-indigo-600 font-bold font-mono">Día 4 de 15</span>
@@ -534,25 +515,52 @@
             </div>
           </div>
 
-          <!-- Botón de Consulta Restringido -->
-          <div class="mt-6 space-y-2">
+          <!-- Botón de Sincronización Bajo Demanda (Syntage API) -->
+          <div class="mt-6 space-y-2.5">
             <div class="relative">
               <button 
+                (click)="syncFiscalAndSic()"
+                [disabled]="isSyncingFiscal()"
                 type="button" 
-                disabled 
-                class="w-full py-3 px-4 rounded-xl text-xs font-semibold text-slate-400 bg-slate-100 border border-slate-200 cursor-not-allowed flex items-center justify-center gap-2">
-                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                </svg>
-                <span>🔄 Sincronizar Conciliación Fiscal & Alertas SIC</span>
+                id="btn-sync-fiscal-tab1"
+                class="w-full py-3.5 px-4 rounded-xl text-xs font-bold transition-all duration-200 shadow-sm flex items-center justify-center gap-2 border"
+                [ngClass]="isSyncingFiscal() 
+                  ? 'bg-indigo-50 text-indigo-700 border-indigo-300 cursor-wait' 
+                  : 'bg-white hover:bg-slate-50 text-slate-800 hover:text-indigo-700 border-slate-300 hover:border-indigo-300 hover:scale-[1.01] active:scale-[0.99]'">
+                @if (isSyncingFiscal()) {
+                  <svg class="animate-spin h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span>Sincronizando con SAT vía Syntage...</span>
+                } @else {
+                  <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                  </svg>
+                  <span>🔄 Sincronizar Conciliación Fiscal & Alertas SIC</span>
+                }
               </button>
-              <div class="absolute -top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white text-slate-700 border border-slate-300 shadow-sm">
-                Disponible en 11 días (26 de Junio)
+              
+              <!-- Badge de Próxima Auto-Sincronización Programada -->
+              <div class="absolute -top-3 right-3 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white text-indigo-800 border border-indigo-200 shadow-xs flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                <span>Auto-sincronización en 11 días (26 Jun)</span>
               </div>
             </div>
+
+            <!-- Toast / Notificación de estado de sincronización -->
+            @if (lastSyncMessage()) {
+              <div class="p-2.5 rounded-xl text-[11px] font-semibold animate-fade-in border flex items-center gap-2"
+                [ngClass]="simulateDelay() ? 'bg-amber-50 text-amber-900 border-amber-300' : 'bg-emerald-50 text-emerald-900 border-emerald-300'">
+                <svg class="w-4 h-4 shrink-0" [ngClass]="simulateDelay() ? 'text-amber-600' : 'text-emerald-600'" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                </svg>
+                <span>{{ lastSyncMessage() }}</span>
+              </div>
+            }
             
-            <p class="text-[11px] text-slate-500 leading-relaxed text-center pt-1">
-              Las consultas recurrentes se ejecutan automáticamente cada 15 días para proteger los costos operativos de la plataforma.
+            <p class="text-[11px] text-slate-500 leading-relaxed text-center pt-0.5">
+              Actualización bajo demanda disponible sin costo adicional dentro de la ventana de 30 días de Syntage (Processed Entity).
             </p>
           </div>
 
@@ -1148,24 +1156,49 @@
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
               </div>
 
-              <!-- Mecanismo de Simulación: "Simulación" (Sin 'Pitch') -->
-              <div class="my-4 p-4 rounded-xl bg-indigo-50/70 border border-indigo-200 flex items-center justify-between shadow-sm">
-                <div class="text-xs">
-                  <span class="font-extrabold text-slate-900 block">Simulación</span>
-                  <span class="text-[11px] text-indigo-700 font-medium">Simular retraso de cliente clave</span>
+              <!-- Botón de Sincronización Bajo Demanda (Syntage API) -->
+              <div class="my-5 space-y-2.5">
+                <div class="relative">
+                  <button 
+                    (click)="syncFiscalAndSic()"
+                    [disabled]="isSyncingFiscal()"
+                    type="button" 
+                    id="btn-sync-fiscal-tab2"
+                    class="w-full py-3.5 px-4 rounded-xl text-xs font-bold transition-all duration-200 shadow-sm flex items-center justify-center gap-2 border"
+                    [ngClass]="isSyncingFiscal() 
+                      ? 'bg-indigo-50 text-indigo-700 border-indigo-300 cursor-wait' 
+                      : 'bg-white hover:bg-slate-50 text-slate-800 hover:text-indigo-700 border-slate-300 hover:border-indigo-300 hover:scale-[1.01] active:scale-[0.99]'">
+                    @if (isSyncingFiscal()) {
+                      <svg class="animate-spin h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span>Consultando CRPs en SAT vía Syntage...</span>
+                    } @else {
+                      <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                      </svg>
+                      <span>🔄 Sincronizar Conciliación Fiscal & Alertas SIC</span>
+                    }
+                  </button>
+                  
+                  <!-- Badge de Próxima Auto-Sincronización Programada -->
+                  <div class="absolute -top-3 right-3 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white text-indigo-800 border border-indigo-200 shadow-xs flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                    <span>Auto-sincronización en 11 días (26 Jun)</span>
+                  </div>
                 </div>
-                
-                <button 
-                  (click)="toggleDemoDelay()"
-                  type="button"
-                  id="toggle-simulacion-monitoreo"
-                  class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none shadow-inner"
-                  [ngClass]="simulateDelay() ? 'bg-amber-500' : 'bg-slate-300'">
-                  <span 
-                    class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out"
-                    [ngClass]="simulateDelay() ? 'translate-x-5' : 'translate-x-0'">
-                  </span>
-                </button>
+
+                <!-- Toast / Notificación de estado de sincronización -->
+                @if (lastSyncMessage()) {
+                  <div class="p-2.5 rounded-xl text-[11px] font-semibold animate-fade-in border flex items-center gap-2"
+                    [ngClass]="simulateDelay() ? 'bg-amber-50 text-amber-900 border-amber-300' : 'bg-emerald-50 text-emerald-900 border-emerald-300'">
+                    <svg class="w-4 h-4 shrink-0" [ngClass]="simulateDelay() ? 'text-amber-600' : 'text-emerald-600'" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>{{ lastSyncMessage() }}</span>
+                  </div>
+                }
               </div>
 
               <!-- Progreso del Ciclo Quincenal -->
