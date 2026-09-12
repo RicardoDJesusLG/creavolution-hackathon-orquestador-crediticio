@@ -6,29 +6,31 @@
 
 ---
 
-## 2. Sistema de Diseño (Dark Mode Fintech)
+## 2. Sistema de Diseño (Light Mode Fintech Premium)
 
-Configurar en `tailwind.config.js` (o variables CSS globales) los siguientes tokens visuales:
+Configurado en `tailwind.config.js` y `src/styles.css` con los siguientes tokens visuales:
 
-* **Colores de Fondo:**
-  * Fondo base (`bg-surface-ground`): `#0B0F19` (Slate ultra oscuro).
-  * Tarjetas y Contenedores (`bg-surface-card`): `#111827` con borde sutil `border border-slate-800`.
-  * Efecto Glassmorphism: `bg-slate-900/60 backdrop-blur-md border border-slate-800/80`.
+* **Colores de Fondo y Superficies:**
+  * Fondo base (`bg-surface-ground` / `body`): `#F8FAFC` (Slate ultra claro) con sutiles halos degradados radiales en índigo y esmeralda.
+  * Tarjetas y Contenedores (`bg-surface-card`): `#FFFFFF` con borde sutil `border border-slate-200/90 shadow-sm`.
+  * Efecto Glassmorphism Claro (`glass-panel`): `bg-white/85 backdrop-blur-md border border-slate-200/90 shadow-sm`.
+  * Paneles Elevados (`glass-panel-elevated`): `bg-white/95 backdrop-blur-lg border border-indigo-200/80 shadow-glass-card`.
 * **Colores de Acento y Marca:**
-  * Acento Positivo/Éxito: `#10B981` (Emerald 500) para aprobaciones, scores altos y métricas positivas.
-  * Acento Primario de Acción: `#6366F1` (Indigo 500) y gradientes hacia `#8B5CF6` (Violet 500) para botones principales.
-  * Acento de Alerta: `#F59E0B` (Amber 500) para estados de advertencia y revisiones.
-* **Tipografía:**
-  * Fuente sans-serif moderna (Inter, System Sans o Roboto).
-  * Texto primario: `#F9FAFB` (Slate 50).
-  * Texto secundario y metadatos: `#9CA3AF` (Slate 400).
-  * Texto atenuado: `#6B7280` (Slate 500).
+  * Acento Positivo / Éxito: `#059669` (Emerald 600) y `#10B981` (Emerald 500) para aprobaciones, scores favorables y métricas positivas.
+  * Acento Primario de Acción: `#4F46E5` (Indigo 600) hacia `#7C3AED` (Violet 600) para botones principales.
+  * Acento de Alerta: `#D97706` (Amber 600) y `#F59E0B` (Amber 500) para estados de advertencia y retrasos PPD.
+  * Colores Institucionales: `#004F9F` (Azul Círculo de Crédito), `#78BE20` (Verde Círculo de Crédito), `#4F46E5` (Púrpura Syntage).
+* **Tipografía y Jerarquía:**
+  * Fuente sans-serif moderna (Inter de Google Fonts).
+  * Texto primario y títulos: `#0F172A` (Slate 900).
+  * Texto secundario y descriptivo: `#334155` (Slate 700) y `#475569` (Slate 600).
+  * Texto atenuado y metadatos: `#64748B` (Slate 500).
 
 ---
 
 ## 3. Configuración de Rutas (Angular Router)
 
-Configurar en `app.routes.ts`:
+Configurado en `app.routes.ts`:
 
 1. Path `''`: Carga `LandingPageComponent` (Vista pública informativa con CTA).
 2. Path `'orquestador'`: Carga `OrchestratorDashboardComponent` (Vista interactiva de extracción, score y subasta).
@@ -38,7 +40,7 @@ Configurar en `app.routes.ts`:
 
 ## 4. Modelos e Interfaces TypeScript
 
-Crear en `src/app/core/models/fintech.models.ts`:
+Ubicado en `src/app/core/models/fintech.models.ts`:
 
 ```typescript
 export interface FinancialMonthData {
@@ -73,7 +75,7 @@ export interface AuctionOfferMock {
 
 ## 5. Datos Mock Compartidos
 
-Crear en `src/app/core/mocks/fintech.mocks.ts`:
+Ubicado en `src/app/core/mocks/fintech.mocks.ts`:
 
 ```typescript
 import { FinancialMonthData, B2BClientRisk } from '../models/fintech.models';
