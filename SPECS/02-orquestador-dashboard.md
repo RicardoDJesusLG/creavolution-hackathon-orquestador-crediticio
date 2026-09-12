@@ -21,12 +21,20 @@ Es el núcleo interactivo para el pitch del Hackathon Crevolution 2026. Diseñad
 
 ---
 
-## 3. Bloque de Acción Principal: Extracción Fiscal SAT con Logo Syntage
+## 3. Bloque de Acción Principal: Extracción Fiscal SAT con Widget CIEC de Syntage
 * **Estado Inicial:**
   * Mensaje: *"Paso 1: Extrae tu facturación electrónica viva del SAT para activar el análisis de solvencia de red y conciliación de clientes PPD."*
   * Botón: `Conectar SAT vía Syntage (CIEC)` con **Logo Oficial de Syntage** integrado.
+  * **Interacción:** Al hacer clic, despliega el **Modal de Autenticación CIEC**.
+* **Modal de Autenticación CIEC (Widget Syntage):**
+  * Ventana emergente con certificación de seguridad: `Cifrado TLS 1.3 / 256-bit`, `Modo Solo Lectura` y `Padrón Fiscal Verificado`.
+  * **Credenciales Prellenadas (Fines de Demo):**
+    * RFC: `ITC190412AA1` (Industrial Textil del Centro S.A. de C.V.).
+    * Contraseña CIEC: `••••••••••••` con botón interactivo de alternar visibilidad (`CiecTextil2026*`).
+  * Aviso de privacidad: Garantía de no almacenamiento de credenciales y conexión directa en sesión temporal con el SAT.
+  * Botón: **`Autenticar y Sincronizar Bóveda Fiscal →`** que cierra el modal e inicia la extracción.
 * **Estado de Carga (Simulado 1.8 segundos):**
-  * El botón cambia a: `Leyendo CFDIs y declaraciones en el SAT...` con spinner SVG animado.
+  * El botón del dashboard cambia a: `Leyendo CFDIs y declaraciones en el SAT...` con spinner SVG animado.
 * **Estado Completado:**
   * El botón se transforma en un chip de éxito: `✓ Expediente Fiscal Sincronizado (1,420 Facturas Procesadas)` con el logotipo de Syntage en verde esmeralda.
   * Se habilitan automáticamente las tablas de datos y se dispara la animación fluida del Score Gauge.

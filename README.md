@@ -80,7 +80,7 @@ El dashboard (`/orquestador`) ofrece dos flujos interactivos para la presentaci�
 
 ### Opción A: Demostración Tradicional (Camino Feliz)
 1. **Paso 1:** Ingresar a `/orquestador`. El medidor inicia en `0` (Sin calificar) y las tablas muestran estado de espera.
-2. **Paso 2:** Hacer clic en **`⚡ Conectar SAT vía Syntage (CIEC)`**. Se simula la lectura fiscal durante 1.8 segundos y el medidor anima fluidamente hasta los **88 puntos (`Grado de Inversión A+`)**.
+2. **Paso 2:** Hacer clic en **`⚡ Conectar SAT vía Syntage (CIEC)`**. Se despliega el **Widget Modal de Autenticación CIEC de Syntage** con credenciales prellenadas para demo (RFC `ITC190412AA1` y contraseña confidencial con botón de alternar visibilidad). Al hacer clic en **`Autenticar y Sincronizar Bóveda Fiscal →`**, se ejecuta la lectura en vivo y el medidor anima fluidamente hasta los **88 puntos (`Grado de Inversión A+`)**.
 3. **Paso 3:** Activar el interruptor **`Simulación`** (*Simular retraso de cliente clave*). El cliente principal pasa a estado ámbar por retraso de 14 días en PPD, el score cae en tiempo real a **74 puntos (`Riesgo Moderado B+`)** y aparece la alerta temprana REDECO.
 4. **Paso 4:** Desactivar la simulación para restaurar los 88 puntos.
 5. **Paso 5:** Hacer clic en **`🚀 Ingresar a Subasta Privada de Crédito`**. Se activa el candado antifraude contra *loan stacking* en la barra superior y se despliega el modal de confirmación con las condiciones anonimizadas.

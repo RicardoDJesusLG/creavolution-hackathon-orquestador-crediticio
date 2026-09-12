@@ -18,11 +18,17 @@ export class OrchestratorDashboardComponent {
   // Reactivity State with Angular Signals (Spec 02)
   readonly satConnected = signal<boolean>(false);
   readonly isLoadingSat = signal<boolean>(false);
+  readonly showCiecModal = signal<boolean>(false);
   readonly scoreValue = signal<number>(0);
   readonly auctionStarted = signal<boolean>(false);
   readonly isAuctionLoading = signal<boolean>(false);
   readonly showAuctionModal = signal<boolean>(false);
   readonly simulateDelay = signal<boolean>(false);
+
+  // Pre-filled demo CIEC credentials
+  readonly demoRfc = signal<string>('ITC190412AA1');
+  readonly demoCiecPassword = signal<string>('••••••••••••');
+  readonly showPasswordText = signal<boolean>(false);
 
   // Semicircle arc length for Gauge: PI * radius (r=75) ≈ 235.62
   private readonly GAUGE_ARC_LENGTH = 235.62;
@@ -67,6 +73,33 @@ export class OrchestratorDashboardComponent {
       return c;
     });
   });
+
+  /**
+   * Opens the CIEC authentication modal (pre-filled for demo)
+   */
+  openCiecModal(): void {
+    if (this.satConnected() || this.isLoadingSat()) return;
+    this.showCiecModal.set(true);
+  }
+
+  /**
+   * Closes the CIEC authentication modal
+   */
+  closeCiecModal(): void {
+    this.showCiecModal.set(false);
+  }
+
+  toggleShowPassword(): void {
+    this.showPasswordText.update(v => !v);
+  }
+
+  /**
+   * Confirms CIEC credentials and triggers SAT extraction via Syntage
+   */
+  submitCiecAndConnect(): void {
+    this.showCiecModal.set(false);
+    this.connectSat();
+  }
 
   /**
    * Simulates SAT extraction via Syntage API (1.8s)
