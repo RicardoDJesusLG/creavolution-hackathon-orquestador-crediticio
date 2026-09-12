@@ -84,11 +84,12 @@ El dashboard (`/orquestador`) ofrece dos flujos interactivos para la presentaci�
 3. **Paso 3:** Activar el interruptor **`Simulación`** (*Simular retraso de cliente clave*). El cliente principal pasa a estado ámbar por retraso de 14 días en PPD, el score cae en tiempo real a **74 puntos (`Riesgo Moderado B+`)** y aparece la alerta temprana REDECO.
 4. **Paso 4:** Desactivar la simulación para restaurar los 88 puntos.
 5. **Paso 5:** Hacer clic en **`🚀 Ingresar a Subasta Privada de Crédito`**. Se activa el candado antifraude contra *loan stacking* en la barra superior y se despliega el modal de confirmación con las condiciones anonimizadas.
-6. **Paso 6 (Mesa de Licitación en Tiempo Real):** Al pulsar **`Ver Posturas en Vivo en la Mesa de Subasta →`**, se ingresa a la **Mesa de Licitación** interactiva:
-   - Se observan las ofertas recibidas en competencia directa con las imágenes vectoriales oficiales de las instituciones financieras: **Banco Santander México**, **Konfío**, **Grupo Financiero Banorte** y **BBVA México**.
-   - Haz clic en **`Refrescar Licitación`** durante el pitch para simular la llegada en tiempo real de nuevas posturas crediticias.
-   - Haz clic en **`Visualizar Oferta (Term Sheet)`** en cualquiera de los bancos para desplegar la ventana emergente con el desglose formal de condiciones (monto, tasa anual TIIE + Spread, mensualidad, comisiones y validación SIC).
-   - Haz clic en **`Aceptar Oferta y Generar Código de Convenio →`** para formalizar: se genera el **Pase de Originación de Crédito (Voucher)** con el logo oficial del banco, token alfanumérico único copiable al portapapeles (`SAN-NXR-2026-9812-B2B`), código QR vectorial nítido para sucursal o portal empresarial y directrices para dispersión en 24h con e.firma SAT.
+6. **Paso 6 (Mesa de Licitación en Tiempo Real):** Al pulsar **`Ver Posturas en Vivo en la Mesa de Subasta →`**, se ingresa a la **Mesa de Licitación**:
+   - **Vista Inicial Vacía:** La mesa inicia indicando que aún ninguna institución financiera ha emitido postura (`0 de 4 posturas`), explicando que las entidades analizan el expediente anonimizado.
+   - **Llegada en Vivo (1° Clic en Refrescar):** Al pulsar **`Consultar Posturas en Vivo (Refrescar Licitación)`**, ingresan en tiempo real las posturas de **Banco Santander México** y **Konfío** con sus imágenes vectoriales oficiales, tasas y plazos (`2 de 4 posturas`).
+   - **Licitación Competitiva (Siguientes Clics):** Al volver a pulsar **`Refrescar Licitación`**, ingresa **Banorte** (`3 de 4`) y posteriormente **BBVA** (`4 de 4`), simulando la puja dinámica multibancaria en vivo.
+   - **Inspección de Condiciones (Term Sheet):** Haz clic en **`Visualizar Oferta (Term Sheet)`** en cualquiera de las entidades para desplegar el desglose formal de condiciones (monto aprobado, tasa anualizada TIIE + Spread, pago mensual y certificación SIC).
+   - **Formalización y Voucher:** Haz clic en **`Aceptar Oferta y Generar Código de Convenio →`** para emitir el **Pase de Originación de Crédito (Voucher)** con el logo oficial del banco seleccionado, token B2B único copiable al portapapeles (`SAN-NXR-2026-9812-B2B`), código QR vectorial nítido para sucursal o ventanilla empresarial y directrices para dispersión en 24h con e.firma SAT.
 
 ### Opción B: Demostración Pre-Extracción (Caso con Riesgo Comercial Inicial)
 1. **Paso 1:** Antes de conectar el SAT, activar el interruptor **`Simulación`**.

@@ -125,6 +125,15 @@ Es el núcleo interactivo para el pitch del Hackathon Crevolution 2026. Diseñad
   * Candado activo de Círculo de Crédito.
   * Contador de posturas: `X de 4 posturas recibidas` (+25 instituciones conectadas).
   * **Botón de Simulación para el Pitch:** `Refrescar Licitación` (con spinner y carga progresiva de ofertas adicionales).
+* **Estado Inicial (Vista Vacía - Esperando Posturas):**
+  * Al ingresar por primera vez a la mesa, la vista inicia vacía (`0 de 4 posturas`):
+    - Título: *"Esperando Primeras Posturas de la Red Financiera"*.
+    - Descripción: *"Aún ninguna institución financiera ha propuesto un otorgamiento de crédito. Las entidades están analizando tu expediente anonimizado y el Score de Red en Círculo de Crédito."*
+    - Botón central destacado: `Consultar Posturas en Vivo (Refrescar Licitación)`.
+* **Llegada Progresiva de Posturas para la Demostración del Pitch:**
+  * **1° Clic en Refrescar:** Llegan las posturas iniciales en competencia de **Banco Santander México** y **Konfío** (`2 de 4 posturas`).
+  * **2° Clic en Refrescar:** Se suma **Grupo Financiero Banorte** (`3 de 4 posturas`).
+  * **3° Clic en Refrescar:** Se incorpora **BBVA México** (`4 de 4 posturas`, completando la mesa con *"✓ Todas las ofertas recibidas"*).
 * **Mocks de Entidades Financieras con Imágenes Oficiales:**
   * Cada objeto en `MOCK_AUCTION_OFFERS` contiene su respectiva imagen institucional (`logoUrl`):
     - **Banco Santander México:** `/images/banks/santander.svg` (Llama icónica Santander sobre fondo rojo).

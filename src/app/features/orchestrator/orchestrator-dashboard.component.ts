@@ -154,8 +154,8 @@ export class OrchestratorDashboardComponent {
     setTimeout(() => {
       this.isAuctionLoading.set(false);
       this.auctionStarted.set(true);
-      // Initialize with Santander and Konfío offers
-      this.receivedOffers.set([this.allOffersPool[0], this.allOffersPool[1]]);
+      // Inicia con vista vacía: esperando propuestas de crédito de las entidades
+      this.receivedOffers.set([]);
       this.showAuctionModal.set(true);
     }, 1500);
   }
@@ -168,14 +168,18 @@ export class OrchestratorDashboardComponent {
    * Refreshes the auction to fetch additional incoming bank offers
    */
   refreshAuction(): void {
-    if (this.isRefreshingAuction()) return;
+    if (this.isRefreshingAuction() || this.receivedOffers().length >= this.allOffersPool.length) return;
 
     this.isRefreshingAuction.set(true);
 
     setTimeout(() => {
       this.isRefreshingAuction.set(false);
       const currentCount = this.receivedOffers().length;
-      if (currentCount < this.allOffersPool.length) {
+      if (currentCount === 0) {
+        // Primera vez que se refresca: ingresan Santander y Konfío
+        this.receivedOffers.set([this.allOffersPool[0], this.allOffersPool[1]]);
+      } else if (currentCount < this.allOffersPool.length) {
+        // Siguientes actualizaciones: incorporan Banorte y BBVA progresivamente
         const nextOffer = this.allOffersPool[currentCount];
         this.receivedOffers.update(offers => [...offers, nextOffer]);
       }
